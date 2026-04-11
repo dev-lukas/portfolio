@@ -1,0 +1,283 @@
+---
+import TechBadge from './TechBadge.astro';
+import { projects } from '../../data/projects';
+
+const project = projects.find((p) => p.id === 'firephenix')!;
+---
+
+<section id="firephenix" class="relative py-24 overflow-hidden">
+  <!-- Warm gradient background -->
+  <div class="absolute inset-0 bg-gradient-to-b from-bg-primary via-[#0F0A08] to-bg-primary" />
+
+  <!-- Ember particles at top -->
+  <canvas id="ember-canvas" class="absolute top-0 left-0 w-full h-32 pointer-events-none" />
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <!-- Section header - Berlin street sign style -->
+    <div class="reveal-up mb-16">
+      <div class="inline-flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 text-xs font-mono text-accent-fire bg-accent-fire/10 rounded-full border border-accent-fire/20">
+          Featured Project
+        </span>
+      </div>
+      <h2 class="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-text-accent">
+        {project.title}
+      </h2>
+      <p class="mt-2 text-lg text-text-secondary font-heading">
+        {project.subtitle}
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+      <!-- Left: Description + Features -->
+      <div class="space-y-8">
+        <p class="reveal-up text-text-secondary leading-relaxed">
+          {project.description}
+        </p>
+
+        <!-- Features -->
+        <div class="reveal-up space-y-3">
+          <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest">Features</h3>
+          <ul class="space-y-2">
+            {project.features.map((feature) => (
+              <li class="flex items-start gap-3 text-sm text-text-secondary">
+                <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent-fire shrink-0" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Tech badges -->
+        <div class="reveal-up">
+          <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-3">Tech Stack</h3>
+          <div class="flex flex-wrap gap-2">
+            {project.tech.map((t) => (
+              <TechBadge name={t.name} color={t.color} />
+            ))}
+          </div>
+        </div>
+
+        <!-- GitHub links with Ampelmannchen -->
+        <div class="reveal-up flex flex-wrap gap-3">
+          <a
+            href="https://firephenix.de"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-text-accent bg-accent-fire/10 border border-accent-fire/25 rounded-lg hover:bg-accent-fire/20 hover:border-accent-fire/40 transition-all duration-300"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            Live Site
+          </a>
+          {project.links.map((link) => (
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-text-secondary bg-bg-secondary border border-white/10 rounded-lg hover:border-accent-fire/30 hover:text-text-accent transition-all duration-300"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/>
+              </svg>
+              {link.label}
+              <!-- Ampelmannchen appears on hover -->
+              <svg class="w-4 h-4 text-accent-green opacity-0 group-hover:opacity-100 transition-opacity duration-300 -mr-1" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="5" r="2.5"/>
+                <path d="M9 8h6l1 4h-2l1 5h-2l-1-5-1 5H9l-1-5H6l1-4z"/>
+              </svg>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right: Browser mockup carousel -->
+      <div class="reveal-up">
+        <div class="relative" id="fp-carousel">
+          <!-- Browser frame -->
+          <div class="browser-mockup">
+            <div class="bg-bg-tertiary rounded-t-lg px-3 py-2.5 flex items-center gap-2 border border-white/5 border-b-0">
+              <div class="flex-1">
+                <div id="fp-url-bar" class="bg-bg-primary/60 rounded px-3 py-1 text-xs text-text-secondary/60 font-mono transition-all duration-300">firephenix.de</div>
+              </div>
+              <div class="flex gap-1.5 items-center">
+                <span class="w-[18px] h-[18px] flex items-center justify-center rounded-sm text-text-secondary/40">
+                  <svg viewBox="0 0 10 10" class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="1.2"><line x1="1" y1="7" x2="9" y2="7"/></svg>
+                </span>
+                <span class="w-[18px] h-[18px] flex items-center justify-center rounded-sm text-text-secondary/40">
+                  <svg viewBox="0 0 10 10" class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1.5" y="1.5" width="7" height="7"/></svg>
+                </span>
+                <span class="w-[18px] h-[18px] flex items-center justify-center rounded-sm text-text-secondary/40">
+                  <svg viewBox="0 0 10 10" class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="1.2"><line x1="2" y1="2" x2="8" y2="8"/><line x1="8" y1="2" x2="2" y2="8"/></svg>
+                </span>
+              </div>
+            </div>
+            <!-- Screenshot area -->
+            <div class="relative bg-bg-secondary rounded-b-lg border border-white/5 border-t-0 overflow-hidden aspect-[16/10]">
+              <img id="fp-slide-0" src="/images/projects/fp-home.png" alt="FirePhenix home" class="fp-slide absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 opacity-100" />
+              <img id="fp-slide-1" src="/images/projects/fp-ranking.png" alt="FirePhenix ranking" class="fp-slide absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 opacity-0" />
+              <img id="fp-slide-2" src="/images/projects/fp-profile.png" alt="FirePhenix profile" class="fp-slide absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 opacity-0" />
+            </div>
+          </div>
+
+          <!-- Navigation arrows -->
+          <button id="fp-prev" class="absolute left-[-18px] top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-bg-secondary/80 border border-white/10 flex items-center justify-center text-text-secondary hover:text-text-accent hover:border-white/25 transition-colors duration-200">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button id="fp-next" class="absolute right-[-18px] top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-bg-secondary/80 border border-white/10 flex items-center justify-center text-text-secondary hover:text-text-accent hover:border-white/25 transition-colors duration-200">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+
+          <!-- Dots indicator -->
+          <div class="flex justify-center gap-2 mt-4">
+            <button class="fp-dot w-2 h-2 rounded-full bg-accent-fire transition-colors duration-300" data-index="0"></button>
+            <button class="fp-dot w-2 h-2 rounded-full bg-text-secondary/30 transition-colors duration-300" data-index="1"></button>
+            <button class="fp-dot w-2 h-2 rounded-full bg-text-secondary/30 transition-colors duration-300" data-index="2"></button>
+          </div>
+        </div>
+
+        <!-- Architecture mini-cards below the mockup -->
+        <div class="mt-8 grid grid-cols-2 gap-3">
+          {[
+            { icon: '🤖', label: 'Discord Bot', detail: 'Event-driven voice tracking & AI chat via OpenRouter' },
+            { icon: '🎙️', label: 'TeamSpeak Bot', detail: 'Telnet ServerQuery with reconnect & backoff' },
+            { icon: '🗄️', label: 'Valkey Pub/Sub', detail: 'Async bot commands, caching & rate limiting' },
+            { icon: '📊', label: 'Chart.js Dashboards', detail: 'Heatmaps, rankings & usage analytics' },
+          ].map((card) => (
+            <div class="reveal-up p-3 rounded-lg bg-bg-secondary/50 border border-white/5 hover:border-accent-fire/20 transition-colors duration-300">
+              <div class="text-lg mb-1">{card.icon}</div>
+              <div class="text-xs font-medium text-text-accent">{card.label}</div>
+              <div class="text-[10px] text-text-secondary mt-0.5">{card.detail}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Infrastructure overview -->
+    <div class="mt-16 reveal-up">
+      <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-6">Infrastructure</h3>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="p-4 rounded-xl bg-bg-secondary/40 border border-white/5 hover:border-accent-fire/15 transition-colors duration-300">
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="w-4 h-4 text-accent-fire" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/></svg>
+            <span class="text-xs font-medium text-text-accent">5 Dockerized Services</span>
+          </div>
+          <p class="text-[11px] text-text-secondary/60 leading-relaxed">MariaDB, Valkey, TeamSpeak, Flask API and Vite frontend orchestrated via Docker Compose with health checks and dependency ordering.</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-bg-secondary/40 border border-white/5 hover:border-accent-fire/15 transition-colors duration-300">
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="w-4 h-4 text-accent-fire" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span class="text-xs font-medium text-text-accent">API Security Layer</span>
+          </div>
+          <p class="text-[11px] text-text-secondary/60 leading-relaxed">Valkey-backed rate limiting with per-endpoint policies, Steam OpenID auth, HTTPONLY sessions, parameterized queries and cross-platform verification codes.</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-bg-secondary/40 border border-white/5 hover:border-accent-fire/15 transition-colors duration-300">
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="w-4 h-4 text-accent-fire" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+            <span class="text-xs font-medium text-text-accent">CI/CD Pipeline</span>
+          </div>
+          <p class="text-[11px] text-text-secondary/60 leading-relaxed">GitHub Actions deploy to Hetzner VPS via SSH -backend restarts Flask + bot systemd services, frontend builds and syncs static assets to Nginx.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const slides = document.querySelectorAll('.fp-slide') as NodeListOf<HTMLElement>;
+  const dots = document.querySelectorAll('.fp-dot') as NodeListOf<HTMLElement>;
+  const urlBar = document.getElementById('fp-url-bar')!;
+  const urls = ['firephenix.de', 'firephenix.de/ranking', 'firephenix.de/profile'];
+  let current = 0;
+
+  function goTo(idx: number) {
+    slides.forEach((s, i) => { s.style.opacity = i === idx ? '1' : '0'; });
+    dots.forEach((d, i) => { d.className = `fp-dot w-2 h-2 rounded-full transition-colors duration-300 ${i === idx ? 'bg-accent-fire' : 'bg-text-secondary/30'}`; });
+    urlBar.textContent = urls[idx];
+    current = idx;
+  }
+
+  document.getElementById('fp-prev')!.addEventListener('click', () => goTo((current - 1 + slides.length) % slides.length));
+  document.getElementById('fp-next')!.addEventListener('click', () => goTo((current + 1) % slides.length));
+  dots.forEach((d) => d.addEventListener('click', () => goTo(Number(d.dataset.index))));
+</script>
+
+<script>
+  // Ember particle effect
+  const canvas = document.getElementById('ember-canvas') as HTMLCanvasElement;
+  if (canvas) {
+    const ctx = canvas.getContext('2d')!;
+    const isMobile = window.innerWidth < 768;
+
+    function resize() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    interface Ember {
+      x: number;
+      y: number;
+      vy: number;
+      vx: number;
+      size: number;
+      life: number;
+      maxLife: number;
+    }
+
+    const embers: Ember[] = [];
+    const maxEmbers = isMobile ? 15 : 40;
+
+    function spawnEmber() {
+      if (embers.length < maxEmbers) {
+        embers.push({
+          x: Math.random() * canvas.width,
+          y: canvas.height + 5,
+          vy: -(Math.random() * 0.8 + 0.3),
+          vx: (Math.random() - 0.5) * 0.3,
+          size: Math.random() * 2 + 1,
+          life: 0,
+          maxLife: Math.random() * 120 + 60,
+        });
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (Math.random() < 0.3) spawnEmber();
+
+      for (let i = embers.length - 1; i >= 0; i--) {
+        const e = embers[i];
+        e.x += e.vx;
+        e.y += e.vy;
+        e.life++;
+
+        const alpha = 1 - e.life / e.maxLife;
+        if (alpha <= 0) { embers.splice(i, 1); continue; }
+
+        ctx.beginPath();
+        ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(232, 93, 44, ${alpha * 0.6})`;
+        ctx.fill();
+
+        // Glow
+        ctx.beginPath();
+        ctx.arc(e.x, e.y, e.size * 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(232, 93, 44, ${alpha * 0.15})`;
+        ctx.fill();
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      animate();
+    }
+  }
+</script>

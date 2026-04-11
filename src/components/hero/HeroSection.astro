@@ -1,0 +1,560 @@
+---
+---
+
+<section id="hero" class="relative h-screen overflow-hidden flex items-center justify-center z-40">
+  <!-- DevOps background canvas -->
+  <canvas id="hero-devops" class="absolute inset-0 w-full h-full" />
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+    <!-- Text side -->
+    <div class="flex-1 text-center lg:text-left">
+      <div>
+        <h1 id="hero-name" class="text-5xl sm:text-6xl lg:text-8xl font-heading font-bold text-text-accent leading-none opacity-0" style="transform: translateY(60px)">
+          Lukas<br/>Roth
+        </h1>
+      </div>
+
+      <div class="mt-6">
+        <p id="hero-subtitle" class="text-lg sm:text-xl lg:text-2xl text-text-secondary font-heading font-medium opacity-0" style="transform: translateY(40px)">
+          <span id="typed-text" class="text-accent-blue"></span><span id="cursor-blink" class="text-accent-blue animate-pulse">|</span>
+        </p>
+      </div>
+
+      <div id="hero-cta" class="mt-10 opacity-0" style="transform: translateY(16px)">
+        <a href="#projects" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-text-secondary border border-white/10 rounded-lg hover:border-white/25 hover:text-text-accent transition-all duration-300">
+          View my work
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Photo placeholder side -->
+    <div id="hero-photo" class="flex-shrink-0 opacity-0" style="transform: scale(1.05)">
+      <div class="relative w-72 h-96 sm:w-80 sm:h-[26rem] lg:w-[22rem] lg:h-[32rem]">
+        <!-- Hard blue shadow (offset, no blur) -->
+        <div class="absolute -bottom-3 -right-3 w-full h-full rounded-lg bg-accent-blue/15" />
+        <div class="relative w-full h-full rounded-lg bg-bg-secondary border border-white/15 overflow-hidden flex items-center justify-center" style="box-shadow: 4px 6px 0px rgba(74,143,231,0.2);">
+          <img src="/images/hero/hero.jpg" alt="Lukas Roth" class="absolute inset-0 w-full h-full object-cover" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fernsehturm scroll indicator -->
+  <div id="hero-scroll-hint" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0">
+    <span class="text-xs text-text-secondary/60 font-mono tracking-widest uppercase">Scroll</span>
+    <svg class="w-4 h-24 text-text-secondary/40 animate-bounce-slow" viewBox="0 0 20 120" fill="none" stroke="currentColor" stroke-width="1.2">
+      <!-- Simplified Fernsehturm -->
+      <line x1="10" y1="0" x2="10" y2="30"/>
+      <ellipse cx="10" cy="38" rx="6" ry="8" fill="none"/>
+      <line x1="10" y1="46" x2="10" y2="110"/>
+      <path d="M6 110 L10 105 L14 110"/>
+    </svg>
+  </div>
+</section>
+
+<style>
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+  .animate-bounce-slow {
+    animation: bounce-slow 2.5s ease-in-out infinite;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  // Typing animation
+  const phrases = ['Developer.', 'DevOps.', 'Berlin.'];
+  const typedEl = document.getElementById('typed-text')!;
+  const cursorEl = document.getElementById('cursor-blink')!;
+
+  async function typeSequence() {
+    for (let i = 0; i < phrases.length; i++) {
+      const phrase = phrases[i];
+      // Type
+      for (let j = 0; j <= phrase.length; j++) {
+        typedEl.textContent = phrases.slice(0, i).join(' ') + (i > 0 ? ' ' : '') + phrase.slice(0, j);
+        await new Promise((r) => setTimeout(r, 60));
+      }
+      if (i < phrases.length - 1) {
+        await new Promise((r) => setTimeout(r, 400));
+      }
+    }
+    // Final state - hide cursor after a beat
+    await new Promise((r) => setTimeout(r, 1000));
+    cursorEl.style.opacity = '0';
+  }
+
+  // GSAP entrance timeline
+  const tl = gsap.timeline({
+    delay: 0.3,
+    onComplete: () => {
+      // Clear all inline styles so elements stay visible on scroll-back
+      ['#hero-name', '#hero-subtitle', '#hero-photo', '#hero-cta', '#hero-scroll-hint'].forEach((sel) => {
+        const el = document.querySelector(sel) as HTMLElement;
+        if (el) {
+          el.style.cssText = '';
+          el.classList.remove('opacity-0');
+          el.style.opacity = '1';
+        }
+      });
+    },
+  });
+
+  tl.to('#hero-name', {
+    y: 0,
+    opacity: 1,
+    duration: 1,
+    ease: 'power3.out',
+  })
+    .to('#hero-subtitle', {
+      y: 0,
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power3.out',
+      onComplete: () => typeSequence(),
+    }, '-=0.5')
+    .to('#hero-photo', {
+      opacity: 1,
+      scale: 1,
+      duration: 1.2,
+      ease: 'power2.out',
+    }, '-=0.6')
+    .to('#hero-cta', {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power2.out',
+    }, '-=0.8')
+    .to('#hero-scroll-hint', {
+      opacity: 1,
+      duration: 1,
+      ease: 'power2.out',
+    }, '-=0.3');
+
+  // DevOps background visualization
+  const canvas = document.getElementById('hero-devops') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d')!;
+  const isMobile = window.innerWidth < 768;
+  const BASE_OPACITY = 0.15;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function drawRoundRect(x: number, y: number, w: number, h: number, r: number) {
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, r);
+  }
+
+  // ============================================
+  // 1. CI/CD PIPELINES - drift left
+  // ============================================
+  interface Pipeline {
+    x: number; y: number; speed: number;
+    stages: { label: string; state: 'done' | 'running' | 'waiting' }[];
+    opacity: number; stageWidth: number;
+  }
+
+  const pipelineLabels = [
+    ['build', 'test', 'deploy'],
+    ['lint', 'compile', 'push'],
+    ['pull', 'build', 'scan', 'release'],
+    ['init', 'plan', 'apply'],
+    ['fetch', 'install', 'build', 'publish'],
+  ];
+
+  const pipelines: Pipeline[] = [];
+  const pipelineCount = isMobile ? 2 : 4;
+  for (let i = 0; i < pipelineCount; i++) {
+    const labels = pipelineLabels[i % pipelineLabels.length];
+    const runIdx = Math.floor(Math.random() * labels.length);
+    pipelines.push({
+      x: Math.random() * canvas.width,
+      y: 60 + Math.random() * (canvas.height - 120),
+      speed: 0.08 + Math.random() * 0.12,
+      stages: labels.map((l, j) => ({ label: l, state: j < runIdx ? 'done' as const : j === runIdx ? 'running' as const : 'waiting' as const })),
+      opacity: BASE_OPACITY + Math.random() * 0.08,
+      stageWidth: 52 + Math.random() * 10,
+    });
+  }
+
+  function drawPipeline(p: Pipeline) {
+    const stageH = 18, gap = 6;
+    ctx.save();
+    ctx.globalAlpha = p.opacity;
+    p.stages.forEach((stage, i) => {
+      const sx = p.x + i * (p.stageWidth + gap), sy = p.y;
+      drawRoundRect(sx, sy, p.stageWidth, stageH, 3);
+      ctx.strokeStyle = stage.state === 'done' ? '#4CAF50' : stage.state === 'running' ? '#F5C518' : '#9090A0';
+      ctx.lineWidth = 1; ctx.stroke();
+      ctx.fillStyle = '#9090A0'; ctx.font = '8px monospace'; ctx.textAlign = 'center';
+      ctx.fillText(stage.label, sx + p.stageWidth / 2, sy + 12);
+      const dotColor = stage.state === 'done' ? '#4CAF50' : stage.state === 'running' ? '#F5C518' : '#555';
+      ctx.beginPath(); ctx.arc(sx + 6, sy + stageH / 2, 2.5, 0, Math.PI * 2); ctx.fillStyle = dotColor; ctx.fill();
+      if (i < p.stages.length - 1) {
+        ctx.beginPath(); ctx.moveTo(sx + p.stageWidth, sy + stageH / 2); ctx.lineTo(sx + p.stageWidth + gap, sy + stageH / 2);
+        ctx.strokeStyle = '#9090A0'; ctx.lineWidth = 0.8; ctx.setLineDash([2, 2]); ctx.stroke(); ctx.setLineDash([]);
+      }
+    });
+    ctx.restore();
+  }
+
+  // ============================================
+  // 2. CONTAINER PODS - fade in/out, float up
+  // ============================================
+  interface Pod {
+    x: number; y: number; vy: number; size: number;
+    opacity: number; maxOpacity: number; phase: number; phaseSpeed: number; label: string;
+  }
+
+  const podNames = ['nginx', 'api', 'redis', 'postgres', 'worker', 'proxy', 'vault', 'grafana', 'prometheus', 'traefik'];
+  const pods: Pod[] = [];
+  const podCount = isMobile ? 3 : 8;
+  for (let i = 0; i < podCount; i++) {
+    pods.push({
+      x: 40 + Math.random() * (canvas.width - 80), y: 60 + Math.random() * (canvas.height - 120),
+      vy: -0.05 - Math.random() * 0.1, size: 14 + Math.random() * 6,
+      opacity: 0, maxOpacity: BASE_OPACITY + Math.random() * 0.08,
+      phase: Math.random() * Math.PI * 2, phaseSpeed: 0.003 + Math.random() * 0.005,
+      label: podNames[i % podNames.length],
+    });
+  }
+
+  function drawPod(p: Pod) {
+    ctx.save(); ctx.globalAlpha = p.opacity;
+    drawRoundRect(p.x, p.y, p.size * 3, p.size, 2); ctx.strokeStyle = '#4A8FE7'; ctx.lineWidth = 0.8; ctx.stroke();
+    const ix = p.x + 4, iy = p.y + p.size / 2 - 4;
+    drawRoundRect(ix, iy, 6, 3.5, 0.5); ctx.stroke();
+    drawRoundRect(ix, iy + 4.5, 6, 3.5, 0.5); ctx.stroke();
+    ctx.fillStyle = '#9090A0'; ctx.font = '7px monospace'; ctx.textAlign = 'left';
+    ctx.fillText(p.label, p.x + 14, p.y + p.size / 2 + 2.5);
+    ctx.restore();
+  }
+
+  // ============================================
+  // 3. LOG STREAMS - scrolling terminal output
+  // ============================================
+  interface LogStream {
+    x: number; y: number; lines: string[]; scrollOffset: number;
+    speed: number; opacity: number; width: number; lineH: number;
+  }
+
+  const logMessages = [
+    '[INFO] Pulling image registry.io/app:latest',
+    '[INFO] Container started on port 8080',
+    '[WARN] High memory usage: 87%',
+    '[INFO] Health check passed ✓',
+    '[INFO] Scaling replicas: 2 → 4',
+    '[INFO] Certificate renewed: *.example.dev',
+    '[INFO] Backup completed: 2.4GB',
+    '[INFO] DNS record updated: A → 10.0.1.5',
+    '[INFO] Rolling update: 3/5 pods ready',
+    '[WARN] Disk usage: /dev/sda1 78%',
+    '[INFO] Metrics exported to Prometheus',
+    '[INFO] SSH tunnel established → bastion',
+    '[INFO] Firewall rule applied: allow 443/tcp',
+    '[INFO] Snapshot created: vm-102-disk-0',
+    '[INFO] Cron job executed: cleanup.sh',
+    '[INFO] Load balancer: 4 healthy backends',
+  ];
+
+  const logStreams: LogStream[] = [];
+  const logCount = isMobile ? 1 : 3;
+  for (let i = 0; i < logCount; i++) {
+    const count = 5 + Math.floor(Math.random() * 4);
+    const lines: string[] = [];
+    for (let j = 0; j < count; j++) lines.push(logMessages[Math.floor(Math.random() * logMessages.length)]);
+    logStreams.push({
+      x: 50 + Math.random() * (canvas.width - 300),
+      y: 40 + Math.random() * (canvas.height - 200),
+      lines, scrollOffset: 0, speed: 0.15 + Math.random() * 0.2,
+      opacity: BASE_OPACITY + Math.random() * 0.06,
+      width: 220 + Math.random() * 60, lineH: 11,
+    });
+  }
+
+  function drawLogStream(l: LogStream) {
+    ctx.save(); ctx.globalAlpha = l.opacity;
+    const visibleLines = 4;
+    const h = visibleLines * l.lineH + 18;
+    // Terminal frame
+    drawRoundRect(l.x, l.y, l.width, h, 3);
+    ctx.fillStyle = '#0A0A0F'; ctx.fill();
+    ctx.strokeStyle = '#9090A040'; ctx.lineWidth = 0.5; ctx.stroke();
+    // Title bar
+    ctx.fillStyle = '#9090A0'; ctx.font = '7px monospace'; ctx.textAlign = 'left';
+    ctx.fillText('$ logs -f', l.x + 6, l.y + 9);
+    // Clip & draw scrolling lines
+    ctx.save();
+    ctx.beginPath(); ctx.rect(l.x + 2, l.y + 14, l.width - 4, h - 16); ctx.clip();
+    const startIdx = Math.floor(l.scrollOffset / l.lineH);
+    const yOff = -(l.scrollOffset % l.lineH);
+    for (let i = 0; i < visibleLines + 1; i++) {
+      const idx = (startIdx + i) % l.lines.length;
+      const ly = l.y + 22 + i * l.lineH + yOff;
+      const line = l.lines[idx];
+      ctx.fillStyle = line.includes('[WARN]') ? '#F5C518' : '#4CAF50';
+      ctx.font = '7px monospace';
+      ctx.fillText(line.substring(0, Math.floor(l.width / 4.2)), l.x + 6, ly);
+    }
+    ctx.restore();
+    ctx.restore();
+  }
+
+  // ============================================
+  // 4. METRICS SPARKLINES - tiny live charts
+  // ============================================
+  interface Sparkline {
+    x: number; y: number; label: string; value: string;
+    points: number[]; opacity: number; color: string; width: number;
+    phase: number;
+  }
+
+  const sparklines: Sparkline[] = [];
+  const sparkCount = isMobile ? 2 : 5;
+  const sparkDefs = [
+    { label: 'cpu', value: '23%', color: '#4A8FE7' },
+    { label: 'mem', value: '1.2G', color: '#E85D2C' },
+    { label: 'net', value: '48Mb/s', color: '#4CAF50' },
+    { label: 'disk', value: '340MB/s', color: '#F5C518' },
+    { label: 'req/s', value: '1.4k', color: '#9C27B0' },
+    { label: 'latency', value: '12ms', color: '#00BCD4' },
+  ];
+
+  for (let i = 0; i < sparkCount; i++) {
+    const def = sparkDefs[i % sparkDefs.length];
+    const pts: number[] = [];
+    for (let j = 0; j < 20; j++) pts.push(Math.random());
+    sparklines.push({
+      x: 80 + Math.random() * (canvas.width - 200),
+      y: 50 + Math.random() * (canvas.height - 100),
+      label: def.label, value: def.value, points: pts,
+      opacity: BASE_OPACITY + Math.random() * 0.08,
+      color: def.color, width: 80 + Math.random() * 30,
+      phase: Math.random() * 100,
+    });
+  }
+
+  function drawSparkline(s: Sparkline) {
+    ctx.save(); ctx.globalAlpha = s.opacity;
+    const h = 22, chartH = 12, chartY = s.y + 10;
+    // Label + value
+    ctx.fillStyle = '#9090A0'; ctx.font = '7px monospace'; ctx.textAlign = 'left';
+    ctx.fillText(s.label, s.x, s.y + 6);
+    ctx.fillStyle = s.color; ctx.textAlign = 'right';
+    ctx.fillText(s.value, s.x + s.width, s.y + 6);
+    // Chart line
+    ctx.beginPath();
+    const step = s.width / (s.points.length - 1);
+    s.points.forEach((p, i) => {
+      const px = s.x + i * step;
+      const py = chartY + chartH - p * chartH;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    });
+    ctx.strokeStyle = s.color; ctx.lineWidth = 1; ctx.stroke();
+    // Baseline
+    ctx.beginPath(); ctx.moveTo(s.x, chartY + chartH); ctx.lineTo(s.x + s.width, chartY + chartH);
+    ctx.strokeStyle = '#9090A030'; ctx.lineWidth = 0.5; ctx.stroke();
+    ctx.restore();
+  }
+
+  // ============================================
+  // 5. NETWORK TOPOLOGY - connected nodes
+  // ============================================
+  interface TopoNode {
+    x: number; y: number; label: string; radius: number;
+  }
+  interface Topology {
+    nodes: TopoNode[]; opacity: number; baseX: number; baseY: number;
+  }
+
+  const topologies: Topology[] = [];
+  if (!isMobile) {
+    const topoCount = 2;
+    for (let t = 0; t < topoCount; t++) {
+      const bx = 100 + Math.random() * (canvas.width - 300);
+      const by = 80 + Math.random() * (canvas.height - 200);
+      const nodeLabels = t === 0
+        ? ['lb', 'web-1', 'web-2', 'db-primary', 'db-replica', 'cache']
+        : ['ingress', 'svc-a', 'svc-b', 'svc-c', 'queue'];
+      const nodes: TopoNode[] = nodeLabels.map((label, i) => {
+        const angle = (i / nodeLabels.length) * Math.PI * 2 - Math.PI / 2;
+        const spread = 50 + Math.random() * 20;
+        return { x: bx + Math.cos(angle) * spread, y: by + Math.sin(angle) * spread, label, radius: 3 };
+      });
+      topologies.push({ nodes, opacity: BASE_OPACITY + Math.random() * 0.06, baseX: bx, baseY: by });
+    }
+  }
+
+  function drawTopology(t: Topology) {
+    ctx.save(); ctx.globalAlpha = t.opacity;
+    // Draw connections (hub-and-spoke from first node)
+    t.nodes.forEach((node, i) => {
+      if (i === 0) return;
+      ctx.beginPath(); ctx.moveTo(t.nodes[0].x, t.nodes[0].y); ctx.lineTo(node.x, node.y);
+      ctx.strokeStyle = '#9090A0'; ctx.lineWidth = 0.5; ctx.setLineDash([3, 3]); ctx.stroke(); ctx.setLineDash([]);
+    });
+    // Draw nodes
+    t.nodes.forEach((node) => {
+      ctx.beginPath(); ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+      ctx.fillStyle = '#4A8FE7'; ctx.fill();
+      ctx.fillStyle = '#9090A0'; ctx.font = '6px monospace'; ctx.textAlign = 'center';
+      ctx.fillText(node.label, node.x, node.y + node.radius + 8);
+    });
+    ctx.restore();
+  }
+
+  // ============================================
+  // 6. GIT ACTIVITY - commit hashes scrolling
+  // ============================================
+  interface GitLine {
+    x: number; y: number; speed: number; opacity: number;
+    hash: string; msg: string; time: string;
+  }
+
+  const commitMsgs = [
+    'fix: resolve race condition in worker',
+    'feat: add health check endpoint',
+    'chore: bump dependencies',
+    'fix: correct nginx proxy headers',
+    'feat: add prometheus metrics',
+    'refactor: extract auth middleware',
+    'ci: add staging deploy step',
+    'fix: handle graceful shutdown',
+    'feat: add redis caching layer',
+    'docs: update runbook for failover',
+  ];
+
+  const gitLines: GitLine[] = [];
+  const gitCount = isMobile ? 2 : 4;
+  for (let i = 0; i < gitCount; i++) {
+    const hash = Math.random().toString(16).substring(2, 9);
+    gitLines.push({
+      x: canvas.width + Math.random() * 300,
+      y: 30 + Math.random() * (canvas.height - 60),
+      speed: 0.15 + Math.random() * 0.2,
+      opacity: BASE_OPACITY + Math.random() * 0.06,
+      hash, msg: commitMsgs[Math.floor(Math.random() * commitMsgs.length)],
+      time: `${Math.floor(Math.random() * 23)}h ago`,
+    });
+  }
+
+  function drawGitLine(g: GitLine) {
+    ctx.save(); ctx.globalAlpha = g.opacity;
+    // Commit dot
+    ctx.beginPath(); ctx.arc(g.x, g.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = '#4CAF50'; ctx.fill();
+    // Branch line through dot
+    ctx.beginPath(); ctx.moveTo(g.x - 10, g.y); ctx.lineTo(g.x + 10, g.y);
+    ctx.strokeStyle = '#4CAF50'; ctx.lineWidth = 1; ctx.stroke();
+    // Hash
+    ctx.fillStyle = '#F5C518'; ctx.font = '7px monospace'; ctx.textAlign = 'left';
+    ctx.fillText(g.hash, g.x + 16, g.y - 2);
+    // Message
+    ctx.fillStyle = '#9090A0'; ctx.font = '7px monospace';
+    ctx.fillText(g.msg.substring(0, 35), g.x + 60, g.y - 2);
+    // Time
+    ctx.fillStyle = '#9090A060';
+    ctx.fillText(g.time, g.x + 16, g.y + 8);
+    ctx.restore();
+  }
+
+  // ============================================
+  // ANIMATION LOOP
+  // ============================================
+  let frame = 0;
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    frame++;
+
+    // 1. Pipelines
+    pipelines.forEach((p) => {
+      p.x -= p.speed;
+      const totalW = p.stages.length * p.stageWidth + (p.stages.length - 1) * 6;
+      if (p.x + totalW < -20) {
+        p.x = canvas.width + 20;
+        p.y = 60 + Math.random() * (canvas.height - 120);
+        const ri = Math.floor(Math.random() * p.stages.length);
+        p.stages.forEach((s, i) => { s.state = i < ri ? 'done' : i === ri ? 'running' : 'waiting'; });
+      }
+      if (frame % 200 === 0) {
+        const ri = p.stages.findIndex((s) => s.state === 'running');
+        if (ri >= 0) { p.stages[ri].state = 'done'; if (ri + 1 < p.stages.length) p.stages[ri + 1].state = 'running'; }
+      }
+      drawPipeline(p);
+    });
+
+    // 2. Pods
+    pods.forEach((p) => {
+      p.phase += p.phaseSpeed;
+      p.opacity = p.maxOpacity * Math.max(0, Math.sin(p.phase));
+      p.y += p.vy;
+      if (p.phase > Math.PI * 2) {
+        p.phase = 0;
+        p.x = 40 + Math.random() * (canvas.width - 80);
+        p.y = 60 + Math.random() * (canvas.height - 120);
+        p.label = podNames[Math.floor(Math.random() * podNames.length)];
+      }
+      if (p.opacity > 0.005) drawPod(p);
+    });
+
+    // 3. Log streams
+    logStreams.forEach((l) => {
+      l.scrollOffset += l.speed;
+      if (l.scrollOffset > l.lines.length * l.lineH) l.scrollOffset = 0;
+      drawLogStream(l);
+    });
+
+    // 4. Sparklines (live update)
+    sparklines.forEach((s) => {
+      s.phase += 0.02;
+      if (frame % 30 === 0) {
+        s.points.shift();
+        const last = s.points[s.points.length - 1];
+        s.points.push(Math.max(0, Math.min(1, last + (Math.random() - 0.5) * 0.3)));
+      }
+      drawSparkline(s);
+    });
+
+    // 5. Topologies (gentle sway)
+    topologies.forEach((t) => {
+      t.nodes.forEach((n, i) => {
+        if (i > 0) {
+          n.x += Math.sin(frame * 0.005 + i) * 0.02;
+          n.y += Math.cos(frame * 0.004 + i * 1.3) * 0.02;
+        }
+      });
+      drawTopology(t);
+    });
+
+    // 6. Git lines (drift left)
+    gitLines.forEach((g) => {
+      g.x -= g.speed;
+      if (g.x < -350) {
+        g.x = canvas.width + 50 + Math.random() * 200;
+        g.y = 30 + Math.random() * (canvas.height - 60);
+        g.hash = Math.random().toString(16).substring(2, 9);
+        g.msg = commitMsgs[Math.floor(Math.random() * commitMsgs.length)];
+        g.time = `${Math.floor(Math.random() * 23)}h ago`;
+      }
+      drawGitLine(g);
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    animate();
+  }
+</script>

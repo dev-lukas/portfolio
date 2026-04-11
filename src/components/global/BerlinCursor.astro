@@ -1,0 +1,93 @@
+---
+---
+
+<!-- Custom Berlin cursor: bear paw default, Ampelmannchen on interactive elements -->
+<div id="berlin-cursor" class="fixed top-0 left-0 z-[9999] pointer-events-none hidden lg:block" style="transform: translate(-50%, -50%)">
+  <!-- Default: Bear paw -->
+  <svg id="cursor-paw" class="w-6 h-6 transition-opacity duration-150" viewBox="0 0 24 24" fill="rgba(232, 232, 237, 0.7)">
+    <!-- Simplified bear paw -->
+    <ellipse cx="12" cy="15" rx="6" ry="5"/>
+    <circle cx="6" cy="8" r="2.5"/>
+    <circle cx="11" cy="6" r="2.5"/>
+    <circle cx="16" cy="6.5" r="2.5"/>
+    <circle cx="19.5" cy="9.5" r="2.2"/>
+  </svg>
+
+  <!-- Hover: Ampelmannchen pointer -->
+  <svg id="cursor-ampel" class="w-7 h-7 opacity-0 absolute top-0 left-0 transition-opacity duration-150" viewBox="0 0 28 28" fill="none">
+    <!-- Walking Ampelmannchen (simplified, stylized) -->
+    <circle cx="14" cy="5" r="3.5" fill="#4CAF50"/>
+    <!-- Body -->
+    <path d="M14 8.5 L14 16" stroke="#4CAF50" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Arms (one forward, one back) -->
+    <path d="M14 11 L9 8.5" stroke="#4CAF50" stroke-width="2" stroke-linecap="round"/>
+    <path d="M14 11 L19.5 14" stroke="#4CAF50" stroke-width="2" stroke-linecap="round"/>
+    <!-- Legs (walking stance) -->
+    <path d="M14 16 L9.5 23" stroke="#4CAF50" stroke-width="2" stroke-linecap="round"/>
+    <path d="M14 16 L19 23" stroke="#4CAF50" stroke-width="2" stroke-linecap="round"/>
+    <!-- Hat -->
+    <ellipse cx="14" cy="2.2" rx="4.5" ry="1" fill="#4CAF50"/>
+  </svg>
+</div>
+
+<script>
+  const cursor = document.getElementById('berlin-cursor');
+  const paw = document.getElementById('cursor-paw');
+  const ampel = document.getElementById('cursor-ampel');
+
+  if (cursor && paw && ampel && window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024) {
+    document.body.classList.add('custom-cursor-enabled');
+
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    // Smooth lerp follow
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.15;
+      cursorY += (mouseY - cursorY) * 0.15;
+      cursor.style.transform = `translate(${cursorX - 12}px, ${cursorY - 12}px)`;
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Switch to Ampelmannchen on interactive elements
+    const interactiveSelector = 'a, button, [role="button"], input, textarea, select, .cursor-pointer';
+
+    document.addEventListener('mouseover', (e) => {
+      const target = (e.target as HTMLElement).closest(interactiveSelector);
+      if (target) {
+        paw!.style.opacity = '0';
+        ampel!.style.opacity = '1';
+        cursor!.style.transform = `translate(${cursorX - 12}px, ${cursorY - 12}px) scale(1.1)`;
+      }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+      const target = (e.target as HTMLElement).closest(interactiveSelector);
+      if (target) {
+        paw!.style.opacity = '1';
+        ampel!.style.opacity = '0';
+        cursor!.style.transform = `translate(${cursorX - 12}px, ${cursorY - 12}px) scale(1)`;
+      }
+    });
+
+    // Hide cursor when mouse leaves viewport
+    document.addEventListener('mouseleave', () => {
+      cursor.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+      cursor.style.opacity = '1';
+    });
+
+    // Respect reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.body.classList.remove('custom-cursor-enabled');
+      cursor.style.display = 'none';
+    }
+  }
+</script>

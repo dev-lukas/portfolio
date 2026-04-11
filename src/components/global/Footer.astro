@@ -1,0 +1,116 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="relative py-12 border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <!-- Left: Logo + Berlin Bear -->
+      <div class="flex items-center gap-3">
+        <span class="font-heading font-bold text-lg text-text-accent">
+          LR<span class="text-accent-blue">.</span>
+        </span>
+        <!-- Berlin Bear silhouette -->
+        <svg class="w-5 h-5 text-text-secondary opacity-50" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C10.5 2 9.5 3 9 4L7 5.5C6 6.2 5.5 7.5 6 8.5L5 10C4.5 11 4.5 12 5 13L4 15C3.5 16 4 17 5 17.5L6 19C6.5 20 7.5 21 9 21.5C10 22 11 22 12 22C13 22 14 22 15 21.5C16.5 21 17.5 20 18 19L19 17.5C20 17 20.5 16 20 15L19 13C19.5 12 19.5 11 19 10L18 8.5C18.5 7.5 18 6.2 17 5.5L15 4C14.5 3 13.5 2 12 2Z"/>
+        </svg>
+      </div>
+
+      <!-- Center: Credit -->
+      <p class="text-xs text-text-secondary">
+        &copy; {currentYear} Lukas Roth
+      </p>
+
+      <!-- Right: social icons -->
+      <div class="flex items-center gap-4">
+        <a
+          href="https://github.com/dev-lukas"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-text-secondary hover:text-text-accent transition-colors duration-300"
+          aria-label="GitHub"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/>
+          </svg>
+        </a>
+        <a
+          href="mailto:mail@lukas-roth.dev"
+          class="text-text-secondary hover:text-text-accent transition-colors duration-300"
+          aria-label="Email"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- U-Bahn easter egg - drives across on first view -->
+  <div id="ubahn-train" class="absolute bottom-3 -left-24 opacity-0 transition-opacity duration-300">
+    <svg class="h-5" viewBox="0 0 120 24" fill="none">
+      <!-- Front car -->
+      <rect x="0" y="4" width="36" height="16" rx="4" fill="#F5C518"/>
+      <rect x="2" y="6" width="8" height="8" rx="1.5" fill="#1A1A26"/>
+      <rect x="12" y="6" width="8" height="8" rx="1.5" fill="#1A1A26"/>
+      <rect x="22" y="7" width="12" height="6" rx="1" fill="#1A1A26" opacity="0.6"/>
+      <!-- Headlight -->
+      <circle cx="3" cy="14" r="1.5" fill="#E8E8ED" opacity="0.8"/>
+      <!-- Wheels -->
+      <circle cx="8" cy="22" r="2" fill="#9090A0"/>
+      <circle cx="28" cy="22" r="2" fill="#9090A0"/>
+
+      <!-- Middle car -->
+      <rect x="40" y="4" width="36" height="16" rx="3" fill="#F5C518"/>
+      <rect x="43" y="6" width="8" height="8" rx="1.5" fill="#1A1A26"/>
+      <rect x="53" y="6" width="8" height="8" rx="1.5" fill="#1A1A26"/>
+      <rect x="63" y="6" width="8" height="8" rx="1.5" fill="#1A1A26"/>
+      <!-- Connector -->
+      <rect x="36" y="9" width="4" height="6" rx="1" fill="#9090A0" opacity="0.5"/>
+      <!-- Wheels -->
+      <circle cx="48" cy="22" r="2" fill="#9090A0"/>
+      <circle cx="68" cy="22" r="2" fill="#9090A0"/>
+
+      <!-- Rear car -->
+      <rect x="80" y="4" width="36" height="16" rx="4" fill="#F5C518"/>
+      <rect x="83" y="6" width="8" height="8" rx="1.5" fill="#1A1A26"/>
+      <rect x="93" y="6" width="8" height="8" rx="1.5" fill="#1A1A26"/>
+      <rect x="103" y="7" width="12" height="6" rx="1" fill="#1A1A26" opacity="0.6"/>
+      <!-- Connector -->
+      <rect x="76" y="9" width="4" height="6" rx="1" fill="#9090A0" opacity="0.5"/>
+      <!-- Tail light -->
+      <circle cx="113" cy="14" r="1.5" fill="#E85D2C" opacity="0.7"/>
+      <!-- Wheels -->
+      <circle cx="88" cy="22" r="2" fill="#9090A0"/>
+      <circle cx="108" cy="22" r="2" fill="#9090A0"/>
+    </svg>
+  </div>
+</footer>
+
+<script>
+  const train = document.getElementById('ubahn-train');
+  if (train) {
+    let hasDriven = false;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !hasDriven) {
+          hasDriven = true;
+          train.style.opacity = '0.7';
+          train.animate(
+            [
+              { transform: 'translateX(0)' },
+              { transform: `translateX(${window.innerWidth + 160}px)` },
+            ],
+            { duration: 5000, easing: 'cubic-bezier(0.25, 0, 0.6, 1)', fill: 'forwards' }
+          );
+          setTimeout(() => { train.style.opacity = '0'; }, 4500);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    const footer = train.closest('footer');
+    if (footer) observer.observe(footer);
+  }
+</script>

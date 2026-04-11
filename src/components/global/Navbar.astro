@@ -1,0 +1,230 @@
+---
+const navLinks = [
+  { label: 'Experience', href: '#experience' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'About', href: '#about' },
+  { label: 'Contact', href: '#contact' },
+];
+---
+
+<nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="#" class="relative z-50 font-heading font-bold text-2xl text-text-accent tracking-tight hover:text-accent-blue transition-colors duration-300">
+      LR<span class="text-accent-blue">.</span>
+    </a>
+
+    <!-- Desktop Navigation - Berlin street sign style -->
+    <div class="hidden md:flex items-center gap-2">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="nav-link group relative px-4 py-1.5 rounded-full text-sm font-medium text-text-secondary hover:text-text-accent transition-colors duration-300"
+          data-section={link.href.slice(1)}
+        >
+          <span class="relative z-10">{link.label}</span>
+          <!-- Street sign background on hover -->
+          <span class="absolute inset-0 rounded-full bg-[#1E3A5F] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <!-- U-Bahn underline -->
+          <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-accent-yellow group-hover:w-3/4 transition-all duration-300" />
+        </a>
+      ))}
+    </div>
+
+    <!-- Mobile: Brandenburger Tor Hamburger -->
+    <button
+      id="menu-toggle"
+      class="md:hidden relative z-50 w-10 h-10 flex items-center justify-center"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+    >
+      <div class="tor-icon">
+        <!-- Left outer column -->
+        <span class="tor-col tor-col-outer left-[3px]" />
+        <!-- Left inner column -->
+        <span class="tor-col tor-col-inner left-[9px]" />
+        <!-- Right inner column -->
+        <span class="tor-col tor-col-inner right-[9px]" />
+        <!-- Right outer column -->
+        <span class="tor-col tor-col-outer right-[3px]" />
+        <!-- Top beam (Architrav) -->
+        <span class="tor-beam tor-beam-top" />
+        <!-- Bottom beam -->
+        <span class="tor-beam tor-beam-bottom" />
+        <!-- Quadriga platform -->
+        <span class="tor-quadriga" />
+      </div>
+    </button>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu" class="fixed inset-0 bg-bg-primary/95 backdrop-blur-xl z-40 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
+    <div class="flex flex-col items-center gap-8">
+      {navLinks.map((link, i) => (
+        <a
+          href={link.href}
+          class="mobile-nav-link text-3xl font-heading font-medium text-text-secondary hover:text-text-accent transition-colors duration-300 translate-y-8 opacity-0"
+          style={`transition-delay: ${i * 80}ms`}
+          data-section={link.href.slice(1)}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- Navbar background (appears on scroll) -->
+  <div id="navbar-bg" class="absolute inset-0 bg-bg-primary/80 backdrop-blur-md border-b border-white/5 opacity-0 transition-opacity duration-500 -z-10" />
+</nav>
+
+<style>
+  /* Brandenburger Tor icon construction */
+  .tor-icon {
+    position: relative;
+    width: 28px;
+    height: 22px;
+  }
+
+  .tor-col {
+    position: absolute;
+    width: 2px;
+    background: currentColor;
+    color: var(--color-text-primary);
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .tor-col-outer {
+    top: 3px;
+    height: 16px;
+  }
+
+  .tor-col-inner {
+    top: 3px;
+    height: 16px;
+  }
+
+  .tor-beam {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    height: 2px;
+    background: currentColor;
+    color: var(--color-text-primary);
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .tor-beam-top {
+    top: 3px;
+  }
+
+  .tor-beam-bottom {
+    bottom: 1px;
+  }
+
+  .tor-quadriga {
+    position: absolute;
+    top: 0;
+    left: 8px;
+    right: 8px;
+    height: 2px;
+    background: currentColor;
+    color: var(--color-text-primary);
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  /* Open state: gate opens into X */
+  :global(.menu-open) .tor-col-outer.left-\[3px\] {
+    transform: rotate(45deg) translateX(6px);
+    height: 22px;
+    top: 0;
+    left: 5px;
+  }
+
+  :global(.menu-open) .tor-col-outer.right-\[3px\] {
+    transform: rotate(-45deg) translateX(-6px);
+    height: 22px;
+    top: 0;
+    right: 5px;
+  }
+
+  :global(.menu-open) .tor-col-inner {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  :global(.menu-open) .tor-beam,
+  :global(.menu-open) .tor-quadriga {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  /* Mobile nav link animation on open */
+  :global(.menu-open) .mobile-nav-link {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .mobile-nav-link {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                color 0.3s;
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle')!;
+  const menu = document.getElementById('mobile-menu')!;
+  const navbar = document.getElementById('navbar')!;
+  const navbarBg = document.getElementById('navbar-bg')!;
+  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+  let isOpen = false;
+
+  function toggleMenu() {
+    isOpen = !isOpen;
+    navbar.classList.toggle('menu-open', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+
+    if (isOpen) {
+      menu.classList.remove('opacity-0', 'pointer-events-none');
+      document.body.style.overflow = 'hidden';
+    } else {
+      menu.classList.add('opacity-0', 'pointer-events-none');
+      document.body.style.overflow = '';
+      // Reset link animations
+      mobileLinks.forEach((link) => {
+        (link as HTMLElement).style.transitionDelay = '';
+      });
+    }
+  }
+
+  toggle.addEventListener('click', toggleMenu);
+
+  // Close on link click
+  mobileLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      if (isOpen) toggleMenu();
+    });
+  });
+
+  // Navbar scroll background
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    navbarBg.style.opacity = scrollY > 100 ? '1' : '0';
+
+    // Active section tracking
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
+      const id = section.id;
+      const links = document.querySelectorAll(`[data-section="${id}"]`);
+      if (rect.top <= 200 && rect.bottom >= 200) {
+        links.forEach((l) => l.classList.add('!text-text-accent'));
+      } else {
+        links.forEach((l) => l.classList.remove('!text-text-accent'));
+      }
+    });
+
+    lastScroll = scrollY;
+  });
+</script>

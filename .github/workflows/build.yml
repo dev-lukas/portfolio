@@ -1,0 +1,91 @@
+name: Build & Push Portfolio
+
+on:
+  push:
+    branches: [main]
+
+env:
+  REGISTRY: 192.168.178.13:5000
+  IMAGE_NAME: portfolio
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Security audit
+        run: |
+          echo "::group::Running npm audit"
+
+          # Capture audit output
+          set +e
+          AUDIT_JSON=$(npm audit --json 2>/dev/null)
+          AUDIT_EXIT=$?
+          set -e
+
+          # Parse vulnerability counts
+          CRITICAL=$(echo "$AUDIT_JSON" | jq '.metadata.vulnerabilities.critical // 0')
+          HIGH=$(echo "$AUDIT_JSON" | jq '.metadata.vulnerabilities.high // 0')
+          MODERATE=$(echo "$AUDIT_JSON" | jq '.metadata.vulnerabilities.moderate // 0')
+          LOW=$(echo "$AUDIT_JSON" | jq '.metadata.vulnerabilities.low // 0')
+
+          echo "Vulnerabilities found: critical=$CRITICAL high=$HIGH moderate=$MODERATE low=$LOW"
+
+          # If critical or high vulnerabilities exist, try auto-fix
+          if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
+            echo "::warning::Critical/high vulnerabilities detected. Attempting auto-fix..."
+            npm audit fix || true
+
+            # Re-check after fix
+            set +e
+            RECHECK_JSON=$(npm audit --json 2>/dev/null)
+            set -e
+
+            CRITICAL_AFTER=$(echo "$RECHECK_JSON" | jq '.metadata.vulnerabilities.critical // 0')
+            HIGH_AFTER=$(echo "$RECHECK_JSON" | jq '.metadata.vulnerabilities.high // 0')
+
+            echo "After fix: critical=$CRITICAL_AFTER high=$HIGH_AFTER"
+
+            if [ "$CRITICAL_AFTER" -gt 0 ]; then
+              echo "::error::$CRITICAL_AFTER critical vulnerabilities remain after auto-fix. Failing build."
+              echo "$RECHECK_JSON" | jq '.vulnerabilities | to_entries[] | select(.value.severity == "critical") | .key' 2>/dev/null
+              exit 1
+            fi
+
+            if [ "$HIGH_AFTER" -gt 0 ]; then
+              echo "::warning::$HIGH_AFTER high vulnerabilities remain after auto-fix. Review recommended."
+            fi
+          fi
+
+          if [ "$MODERATE" -gt 0 ] || [ "$LOW" -gt 0 ]; then
+            echo "::notice::$MODERATE moderate and $LOW low vulnerabilities found. Non-blocking."
+          fi
+
+          echo "::endgroup::"
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            .
+
+      - name: Push to registry
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Cleanup
+        if: always()
+        run: docker image prune -f

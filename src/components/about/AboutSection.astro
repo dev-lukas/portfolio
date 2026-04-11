@@ -1,0 +1,92 @@
+---
+const birthday = new Date(1999, 2, 9); // March 9, 1999
+const today = new Date();
+let age = today.getFullYear() - birthday.getFullYear();
+const monthDiff = today.getMonth() - birthday.getMonth();
+if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) {
+  age--;
+}
+---
+
+<section id="about" class="relative py-24">
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <div class="reveal-up mb-16">
+      <div class="inline-flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 text-xs font-mono text-accent-blue bg-accent-blue/10 rounded-full border border-accent-blue/20">
+          About
+        </span>
+      </div>
+      <h2 class="text-4xl sm:text-5xl font-heading font-bold text-text-accent">
+        About Me
+      </h2>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-12 lg:gap-16 items-start">
+      <!-- Photo + card (2 cols) -->
+      <div class="lg:col-span-2 reveal-up">
+        <div class="relative">
+          <div class="relative w-full aspect-[3/4] rounded-2xl bg-bg-secondary border border-white/10 overflow-hidden group">
+            <img src="/images/hero/about-me.jpg" alt="Lukas Roth" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-bg-primary/40 via-transparent to-transparent pointer-events-none" />
+          </div>
+
+          <!-- Info card overlapping the photo -->
+          <div class="absolute -bottom-6 -right-4 lg:-right-8 bg-bg-secondary/90 backdrop-blur-md border border-white/10 rounded-xl p-4 shadow-2xl">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-accent-blue/10 flex items-center justify-center">
+                <svg class="w-5 h-5 text-accent-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-sm font-medium text-text-accent">Berlin, Germany</div>
+                <div class="text-xs text-text-secondary">{age} years old</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio text (3 cols) -->
+      <div class="lg:col-span-3 space-y-6">
+        <p class="reveal-up text-text-secondary leading-relaxed text-lg">
+          I've been tinkering with computers for as long as I can remember. What started with taking apart my family PC
+          and hosting a Minecraft server for friends eventually turned into a genuine passion for infrastructure,
+          self-hosting, and building things from scratch.
+        </p>
+
+        <p class="reveal-up text-text-secondary leading-relaxed">
+          I love the challenge of making things work end-to-end: from writing the code, to setting up the server,
+          to automating the deployment. But what I enjoy most is building things that bring people together.
+          Whether it's a gaming community or a tool that makes someone's day easier, that's what keeps me going.
+        </p>
+
+        <p class="reveal-up text-text-secondary leading-relaxed">
+          Based in Berlin, I spend my free time pushing my homelab to its limits, optimizing power consumption
+          down to single-digit watts, and finding new things to self-host.
+        </p>
+
+        <!-- Interest tags -->
+        <div class="reveal-up pt-4">
+          <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-4">Interests</h3>
+          <div class="flex flex-wrap gap-2">
+            {[
+              { label: 'Gaming', icon: '🎮' },
+              { label: 'Homelab', icon: '🖥️' },
+              { label: 'Privacy', icon: '🔒' },
+              { label: 'DevOps', icon: '⚙️' },
+              { label: 'Automation', icon: '🤖' },
+              { label: 'Networking', icon: '🌐' },
+            ].map((interest) => (
+              <span class="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-text-secondary bg-bg-secondary border border-white/5 rounded-full hover:border-accent-blue/20 hover:text-text-accent transition-all duration-300">
+                <span>{interest.icon}</span>
+                {interest.label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,129 @@
+---
+import { stratoExperience } from '../../data/projects';
+---
+
+<section id="experience" class="relative py-24">
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <!-- Header -->
+    <div class="reveal-up mb-16">
+      <div class="inline-flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 text-xs font-mono text-accent-yellow bg-accent-yellow/10 rounded-full border border-accent-yellow/20">
+          Professional Experience
+        </span>
+      </div>
+      <h2 class="text-4xl sm:text-5xl font-heading font-bold text-text-accent">
+        {stratoExperience.title}
+      </h2>
+      <div class="flex flex-wrap items-center gap-3 mt-3">
+        <span class="text-lg text-text-secondary font-heading">{stratoExperience.company}</span>
+        <span class="w-1 h-1 rounded-full bg-text-secondary/40" />
+        <span class="text-sm text-text-secondary/60">{stratoExperience.type}</span>
+      </div>
+    </div>
+
+    <p class="reveal-up text-text-secondary leading-relaxed max-w-2xl mb-12">
+      {stratoExperience.description}
+    </p>
+
+    <!-- Key work highlights -->
+    <div class="grid sm:grid-cols-3 gap-4 mb-16">
+      {stratoExperience.highlights.map((h) => (
+        <div class="reveal-up p-5 rounded-xl bg-bg-secondary/50 border border-white/5 hover:border-accent-yellow/20 transition-colors duration-300">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-lg bg-accent-yellow/10 flex items-center justify-center">
+              {h.icon === 'image' && (
+                <svg class="w-4 h-4 text-accent-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>
+                </svg>
+              )}
+              {h.icon === 'shield' && (
+                <svg class="w-4 h-4 text-accent-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>
+                </svg>
+              )}
+              {h.icon === 'convert' && (
+                <svg class="w-4 h-4 text-accent-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                </svg>
+              )}
+            </div>
+            <h3 class="text-sm font-heading font-medium text-text-accent">{h.title}</h3>
+          </div>
+          <p class="text-xs text-text-secondary/70 leading-relaxed">{h.detail}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- U-Bahn Timeline -->
+    <div class="reveal-up relative">
+      <!-- Horizontal line (desktop) / Vertical line (mobile) -->
+      <div class="hidden md:block absolute top-[5px] left-0 right-0 h-[3px] bg-bg-tertiary rounded-full">
+        <div id="ubahn-line-fill" class="h-full bg-accent-yellow rounded-full origin-left" style="transform: scaleX(0); transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);" />
+      </div>
+      <div class="md:hidden absolute top-0 bottom-0 left-6 w-[3px] bg-bg-tertiary rounded-full">
+        <div id="ubahn-line-fill-mobile" class="w-full bg-accent-yellow rounded-full origin-top" style="transform: scaleY(0); transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);" />
+      </div>
+
+      <!-- Stations -->
+      <div class="md:flex md:justify-between relative">
+        {stratoExperience.stations.map((station, i) => (
+          <div class="ubahn-station group relative flex md:flex-col items-start md:items-center gap-4 md:gap-0 pb-8 md:pb-0 pl-14 md:pl-0" data-index={i}>
+            <!-- Station dot - centered on the line -->
+            <div class="absolute left-[18px] top-1 md:static md:relative z-10">
+              <div class="w-[14px] h-[14px] rounded-full bg-bg-primary border-[3px] border-bg-tertiary group-hover:border-accent-yellow transition-colors duration-500">
+                <div class="absolute inset-0 rounded-full bg-accent-yellow/0 group-hover:bg-accent-yellow/20 scale-150 transition-all duration-500" />
+              </div>
+            </div>
+
+            <!-- Station label -->
+            <div class="md:mt-3 md:text-center">
+              <div class="text-sm font-heading font-medium text-text-accent group-hover:text-accent-yellow transition-colors duration-300">
+                {station.name}
+              </div>
+              <p class="mt-1 text-xs text-text-secondary/60 max-w-[160px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 md:text-center">
+                {station.detail}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- U-Bahn label -->
+      <div class="hidden md:flex items-center gap-2 mt-8 justify-center">
+        <div class="flex items-center justify-center w-6 h-6 rounded-full bg-accent-yellow text-bg-primary text-xs font-bold">U</div>
+        <span class="text-xs text-text-secondary/40 font-mono">Skills Line</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Animate the U-Bahn line on scroll into view
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const fill = document.getElementById('ubahn-line-fill');
+          const fillMobile = document.getElementById('ubahn-line-fill-mobile');
+          if (fill) fill.style.transform = 'scaleX(1)';
+          if (fillMobile) fillMobile.style.transform = 'scaleY(1)';
+
+          // Stagger station dots
+          const stations = document.querySelectorAll('.ubahn-station');
+          stations.forEach((s, i) => {
+            setTimeout(() => {
+              const dot = s.querySelector('.border-bg-tertiary');
+              if (dot) dot.classList.replace('border-bg-tertiary', 'border-accent-yellow');
+            }, 300 + i * 200);
+          });
+
+          observer.disconnect();
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  const section = document.getElementById('experience');
+  if (section) observer.observe(section);
+</script>

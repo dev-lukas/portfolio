@@ -1,0 +1,338 @@
+---
+import TechBadge from './TechBadge.astro';
+import { projects } from '../../data/projects';
+
+const project = projects.find((p) => p.id === 'homeserver')!;
+---
+
+<section id="homeserver" class="relative py-24 overflow-hidden">
+  <!-- Brick texture overlay -->
+  <div class="absolute inset-0 opacity-[0.02]" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 14px, rgba(232,93,44,0.4) 14px, rgba(232,93,44,0.4) 16px), repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(232,93,44,0.2) 30px, rgba(232,93,44,0.2) 31px);" />
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <!-- Section header -->
+    <div class="reveal-up mb-16">
+      <div class="inline-block mb-4">
+        <div class="inline-flex items-center px-5 py-2 bg-[#1E3A5F] rounded-[20px] border border-[#2A4A6F]">
+          <span class="text-white text-sm font-heading font-medium tracking-wide">Homeserver</span>
+        </div>
+      </div>
+      <p class="text-lg text-text-secondary font-heading">
+        Fully Passive Proxmox Server
+      </p>
+      <p class="mt-4 text-text-secondary leading-relaxed max-w-3xl">
+        A completely silent, fanless homeserver built for 24/7 operation. Serves as my main container registry, GitHub Actions runner for CI/CD, and runs all my self-hosted services; from home automation to this website.
+      </p>
+    </div>
+
+    <!-- ===================== -->
+    <!-- THE BUILD + GALLERY   -->
+    <!-- ===================== -->
+    <div class="reveal-up mb-20">
+      <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-6">The Build -Zero Moving Parts</h3>
+
+      <!-- Hardware spec cards -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="p-4 rounded-xl bg-bg-secondary/60 border border-white/5 hover:border-[#E57000]/20 transition-colors duration-300">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-8 h-8 rounded-lg bg-[#E57000]/10 flex items-center justify-center">
+              <svg class="w-4 h-4 text-[#E57000]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/>
+                <line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/>
+                <line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/>
+                <line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/>
+                <line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/>
+              </svg>
+            </div>
+            <div>
+              <div class="text-xs text-text-secondary/50 uppercase tracking-wider">Chassis</div>
+              <div class="text-sm font-medium text-text-accent">HDPlex H5</div>
+            </div>
+          </div>
+          <p class="text-xs text-text-secondary/60">Fanless aluminium chassis with passive heatsink design</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-bg-secondary/60 border border-white/5 hover:border-accent-blue/20 transition-colors duration-300">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-8 h-8 rounded-lg bg-accent-blue/10 flex items-center justify-center">
+              <svg class="w-4 h-4 text-accent-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M6 18L18 6M8 6h10v10"/>
+              </svg>
+            </div>
+            <div>
+              <div class="text-xs text-text-secondary/50 uppercase tracking-wider">CPU</div>
+              <div class="text-sm font-medium text-text-accent">i5-13500T</div>
+            </div>
+          </div>
+          <p class="text-xs text-text-secondary/60">14 cores / 20 threads, 35W TDP: perfect for passive cooling</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-bg-secondary/60 border border-white/5 hover:border-accent-green/20 transition-colors duration-300">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-8 h-8 rounded-lg bg-accent-green/10 flex items-center justify-center">
+              <svg class="w-4 h-4 text-accent-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="2" y="6" width="20" height="12" rx="2"/>
+                <line x1="6" y1="10" x2="6" y2="14"/><line x1="10" y1="10" x2="10" y2="14"/>
+                <line x1="14" y1="10" x2="14" y2="14"/><line x1="18" y1="10" x2="18" y2="14"/>
+              </svg>
+            </div>
+            <div>
+              <div class="text-xs text-text-secondary/50 uppercase tracking-wider">Storage</div>
+              <div class="text-sm font-medium text-text-accent">24 TB SSD</div>
+            </div>
+          </div>
+          <p class="text-xs text-text-secondary/60">All-flash storage in a ZFS array -silent, fast, power efficient and reliable</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-bg-secondary/60 border border-white/5 hover:border-accent-yellow/20 transition-colors duration-300">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-8 h-8 rounded-lg bg-accent-yellow/10 flex items-center justify-center">
+              <svg class="w-4 h-4 text-accent-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/>
+                <line x1="7" y1="7" x2="7" y2="7.01"/><line x1="11" y1="7" x2="11" y2="7.01"/>
+                <line x1="7" y1="17" x2="7" y2="17.01"/><line x1="11" y1="17" x2="11" y2="17.01"/>
+              </svg>
+            </div>
+            <div>
+              <div class="text-xs text-text-secondary/50 uppercase tracking-wider">RAM</div>
+              <div class="text-sm font-medium text-text-accent">64 GB ECC</div>
+            </div>
+          </div>
+          <p class="text-xs text-text-secondary/60">Error-correcting memory for server-class reliability</p>
+        </div>
+      </div>
+
+      <!-- Gallery -->
+      <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-4">Gallery</h3>
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-3">
+        {[
+          { src: '/images/projects/server-front-1.jpg', alt: 'Server front view' },
+          { src: '/images/projects/server-front-2.jpg', alt: 'Server front detail' },
+          { src: '/images/projects/server-top-down.jpg', alt: 'Server top-down view' },
+        ].map((img) => (
+          <button class="gallery-thumb group relative aspect-[4/3] rounded-lg bg-bg-secondary border border-white/5 overflow-hidden hover:border-[#E57000]/20 transition-colors duration-300 cursor-pointer" data-src={img.src} data-alt={img.alt}>
+            <img src={img.src} alt={img.alt} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-bg-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <!-- Expand icon -->
+            <div class="absolute top-2 right-2 w-7 h-7 rounded-md bg-bg-primary/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <svg class="w-3.5 h-3.5 text-text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Lightbox overlay -->
+    <div id="lightbox" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+      <!-- Backdrop -->
+      <div id="lightbox-backdrop" class="absolute inset-0 bg-bg-primary/90 backdrop-blur-sm" />
+      <!-- Image container -->
+      <div class="relative z-10 max-w-[90vw] max-h-[90vh]">
+        <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[85vh] rounded-lg object-contain shadow-2xl" />
+        <!-- Close button -->
+        <button id="lightbox-close" class="absolute -top-4 -right-4 w-9 h-9 rounded-full bg-bg-secondary border border-white/10 flex items-center justify-center text-text-secondary hover:text-text-accent hover:border-white/25 transition-colors duration-200">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ======================= -->
+    <!-- ENERGY EFFICIENCY       -->
+    <!-- ======================= -->
+    <div class="reveal-up mb-20">
+      <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-6">Energy Efficiency</h3>
+
+      <div class="grid lg:grid-cols-5 gap-8 items-start">
+        <!-- Left: Description (3 cols) -->
+        <div class="lg:col-span-3 space-y-4">
+          <p class="text-text-secondary leading-relaxed">
+            Every component was carefully selected not just for performance, but for power efficiency. With no moving parts, no fans, no spinning disks, the system reaches deep C-states that most servers can't, while still supporting ECC memory for data integrity.
+          </p>
+          <p class="text-text-secondary leading-relaxed">
+            The i5-13500T's 35W TDP combined with Intel's power management, Powertop auto-tuning, and custom LTR configuration allows the system to idle at <strong class="text-text-accent font-medium">sub 14W</strong> in best conditions, comparable to a light bulb. Yet when compute is needed, all 14 cores and 20 threads are ready to burst.
+          </p>
+        </div>
+
+        <!-- Right: Power stats (2 cols) -->
+        <div class="lg:col-span-2 space-y-3">
+          <div class="p-4 rounded-xl bg-bg-secondary/40 border border-white/5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-mono text-text-secondary/60 uppercase">Idle Power</span>
+              <span class="text-lg font-heading font-bold text-accent-green">&lt; 14W</span>
+            </div>
+            <div class="w-full h-1.5 bg-bg-tertiary rounded-full overflow-hidden">
+              <div class="h-full bg-accent-green/60 rounded-full" style="width: 9%;" />
+            </div>
+            <p class="mt-1 text-[10px] text-text-secondary/40 text-right">of 150W max</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="p-3 rounded-lg bg-bg-secondary/40 border border-white/5 text-center">
+              <div class="text-lg font-heading font-bold text-accent-blue">0</div>
+              <div class="text-[10px] text-text-secondary/50 uppercase mt-0.5">Fans</div>
+            </div>
+            <div class="p-3 rounded-lg bg-bg-secondary/40 border border-white/5 text-center">
+              <div class="text-lg font-heading font-bold text-accent-blue">0 dB</div>
+              <div class="text-[10px] text-text-secondary/50 uppercase mt-0.5">Noise</div>
+            </div>
+            <div class="p-3 rounded-lg bg-bg-secondary/40 border border-white/5 text-center">
+              <div class="text-lg font-heading font-bold text-accent-yellow">ECC</div>
+              <div class="text-[10px] text-text-secondary/50 uppercase mt-0.5">Memory</div>
+            </div>
+            <div class="p-3 rounded-lg bg-bg-secondary/40 border border-white/5 text-center">
+              <div class="text-lg font-heading font-bold text-accent-yellow">C8</div>
+              <div class="text-[10px] text-text-secondary/50 uppercase mt-0.5">Deep C-State</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================= -->
+    <!-- ANSIBLE / INFRA AS CODE -->
+    <!-- ======================= -->
+    <div class="reveal-up">
+      <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-6">{project.title} -{project.subtitle}</h3>
+
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <!-- Left: Terminal + Diagram -->
+        <div>
+          <!-- Terminal window -->
+          <div class="reveal-up rounded-lg border border-white/10 overflow-hidden bg-bg-secondary">
+            <div class="px-3 py-2 bg-bg-tertiary border-b border-white/5 flex items-center gap-2">
+              <span class="text-xs text-text-secondary/60 font-mono flex-1">ansible-playbook</span>
+              <div class="flex gap-1.5 items-center">
+                <span class="w-[18px] h-[18px] flex items-center justify-center rounded-sm hover:bg-white/10 transition-colors text-text-secondary/40 hover:text-text-secondary">
+                  <svg viewBox="0 0 10 10" class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="1.2"><line x1="1" y1="7" x2="9" y2="7"/></svg>
+                </span>
+                <span class="w-[18px] h-[18px] flex items-center justify-center rounded-sm hover:bg-white/10 transition-colors text-text-secondary/40 hover:text-text-secondary">
+                  <svg viewBox="0 0 10 10" class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1.5" y="1.5" width="7" height="7"/></svg>
+                </span>
+                <span class="w-[18px] h-[18px] flex items-center justify-center rounded-sm hover:bg-red-500/80 transition-colors text-text-secondary/40 hover:text-white">
+                  <svg viewBox="0 0 10 10" class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="1.2"><line x1="2" y1="2" x2="8" y2="8"/><line x1="8" y1="2" x2="2" y2="8"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="p-4 font-mono text-xs leading-6 overflow-x-auto">
+              <div class="text-accent-green">$ ansible-playbook -i inventory/hosts site.yml</div>
+              <br/>
+              <div class="text-text-secondary/60">PLAY [Configure proxmox host] ***</div>
+              <br/>
+              <div class="text-text-secondary/60">TASK [common : Deploy SSH keys] ***</div>
+              <div class="text-accent-green">ok: [proxmox]</div>
+              <br/>
+              <div class="text-text-secondary/60">TASK [common : Configure unattended-upgrades] ***</div>
+              <div class="text-accent-green">ok: [proxmox]</div>
+              <br/>
+              <div class="text-text-secondary/60">TASK [power : Configure Powertop] ***</div>
+              <div class="text-accent-green">changed: [proxmox]</div>
+              <br/>
+              <div class="text-text-secondary/60">TASK [docker : Install services] ***</div>
+              <div class="text-accent-green">ok: [proxmox]</div>
+              <br/>
+              <div class="text-text-secondary/60">TASK [security : Apply firewall rules] ***</div>
+              <div class="text-accent-green">changed: [proxmox]</div>
+              <br/>
+              <div class="text-text-secondary/60">PLAY RECAP ***</div>
+              <div>
+                <span class="text-accent-green">proxmox</span>
+                <span class="text-text-secondary/40"> : ok=</span><span class="text-accent-green">8</span>
+                <span class="text-text-secondary/40"> changed=</span><span class="text-accent-yellow">2</span>
+                <span class="text-text-secondary/40"> failed=</span><span class="text-accent-fire">0</span>
+              </div>
+              <br/>
+              <div class="flex items-center gap-1">
+                <span class="text-accent-green">$</span>
+                <span class="inline-block w-2 h-4 bg-text-primary/60 animate-pulse" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Description + features + tech + link -->
+        <div class="space-y-8">
+          <p class="reveal-up text-text-secondary leading-relaxed">
+            {project.description}
+          </p>
+
+          <div class="reveal-up space-y-3">
+            <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest">Capabilities</h3>
+            <ul class="space-y-2">
+              {project.features.map((feature) => (
+                <li class="flex items-start gap-3 text-sm text-text-secondary">
+                  <span class="mt-1 text-accent-green text-xs">&#x25B6;</span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="reveal-up">
+            <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-3">Tech Stack</h3>
+            <div class="flex flex-wrap gap-2">
+              {project.tech.map((t) => (
+                <TechBadge name={t.name} color={t.color} />
+              ))}
+            </div>
+          </div>
+
+          <div class="reveal-up">
+            {project.links.map((link) => (
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-text-secondary bg-bg-secondary border border-white/10 rounded-lg hover:border-accent-green/30 hover:text-text-accent transition-all duration-300"
+              >
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/>
+                </svg>
+                {link.label}
+                <svg class="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                </svg>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const lightbox = document.getElementById('lightbox')!;
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const lightboxClose = document.getElementById('lightbox-close')!;
+  const lightboxBackdrop = document.getElementById('lightbox-backdrop')!;
+  const thumbs = document.querySelectorAll('.gallery-thumb');
+
+  function openLightbox(src: string, alt: string) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt;
+    lightbox.classList.remove('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.add('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = '';
+  }
+
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+      const src = (thumb as HTMLElement).dataset.src!;
+      const alt = (thumb as HTMLElement).dataset.alt!;
+      openLightbox(src, alt);
+    });
+  });
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightboxBackdrop.addEventListener('click', closeLightbox);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+

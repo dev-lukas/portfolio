@@ -1,0 +1,92 @@
+---
+---
+
+<!-- Split transition: hero cracks apart to reveal projects -->
+<div id="split-wrapper" class="relative">
+  <!-- Split overlay panels (cover the content, then slide apart) -->
+  <div id="split-overlay" class="fixed inset-0 z-30 pointer-events-none" style="opacity: 0;">
+    <!-- Left panel -->
+    <div id="split-left" class="absolute top-0 left-0 w-1/2 h-full bg-bg-primary">
+      <!-- Industrial brick texture edge -->
+      <div class="absolute top-0 right-0 w-4 h-full bg-gradient-to-l from-white/[0.03] to-transparent" />
+      <div class="absolute top-0 right-0 w-1 h-full" style="background: repeating-linear-gradient(180deg, transparent, transparent 8px, rgba(232,93,44,0.08) 8px, rgba(232,93,44,0.08) 10px);" />
+    </div>
+    <!-- Right panel -->
+    <div id="split-right" class="absolute top-0 right-0 w-1/2 h-full bg-bg-primary">
+      <div class="absolute top-0 left-0 w-4 h-full bg-gradient-to-r from-white/[0.03] to-transparent" />
+      <div class="absolute top-0 left-0 w-1 h-full" style="background: repeating-linear-gradient(180deg, transparent, transparent 8px, rgba(232,93,44,0.08) 8px, rgba(232,93,44,0.08) 10px);" />
+    </div>
+    <!-- Center glow -->
+    <div id="split-glow" class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-full bg-accent-blue/0 blur-xl transition-all duration-300" />
+  </div>
+
+  <!-- Actual project content (revealed after split) -->
+  <div id="projects-content">
+    <slot />
+  </div>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const isMobile = window.innerWidth < 768;
+
+  if (!isMobile && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const overlay = document.getElementById('split-overlay')!;
+
+    // Fade in the overlay as user approaches the split section
+    ScrollTrigger.create({
+      trigger: '#hero',
+      start: 'bottom 80%',
+      end: 'bottom top',
+      onEnter: () => { overlay.style.opacity = '1'; overlay.style.transition = 'opacity 0.3s'; },
+      onLeaveBack: () => { overlay.style.opacity = '0'; },
+    });
+
+    const splitTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#split-wrapper',
+        start: 'top 80%',
+        end: 'top 20%',
+        scrub: 1,
+      },
+    });
+
+    // Glow appears first
+    splitTl
+      .to('#split-glow', {
+        backgroundColor: 'rgba(74, 143, 231, 0.15)',
+        width: '8px',
+        duration: 0.3,
+      })
+      // Panels slide apart
+      .to('#split-left', {
+        x: '-100%',
+        duration: 1,
+        ease: 'power2.inOut',
+      }, 0.2)
+      .to('#split-right', {
+        x: '100%',
+        duration: 1,
+        ease: 'power2.inOut',
+      }, 0.2)
+      .to('#split-glow', {
+        opacity: 0,
+        duration: 0.3,
+      }, 0.8);
+
+    // After split completes, hide the overlay entirely
+    ScrollTrigger.create({
+      trigger: '#split-wrapper',
+      start: 'top 10%',
+      onEnter: () => { overlay.style.display = 'none'; },
+      onLeaveBack: () => { overlay.style.display = ''; overlay.style.opacity = '1'; },
+    });
+  } else {
+    // Mobile / reduced motion: keep overlay hidden
+    document.getElementById('split-overlay')!.style.display = 'none';
+  }
+</script>

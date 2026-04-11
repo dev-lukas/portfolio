@@ -1,0 +1,28 @@
+---
+interface Props {
+  color?: 'yellow' | 'blue' | 'green';
+}
+
+const { color = 'yellow' } = Astro.props;
+
+const colorMap = {
+  yellow: 'bg-accent-yellow',
+  blue: 'bg-accent-blue',
+  green: 'bg-accent-green',
+};
+---
+
+<!-- U-Bahn line section divider -->
+<div class="relative py-16 flex items-center justify-center">
+  <div class="w-full max-w-7xl mx-auto px-6 flex items-center gap-4">
+    <!-- Line -->
+    <div class={`flex-1 h-[2px] ${colorMap[color]} opacity-20 rounded-full`} />
+    <!-- Station dot -->
+    <div class="relative flex items-center justify-center">
+      <div class={`w-3 h-3 rounded-full ${colorMap[color]} opacity-40`} />
+      <div class={`absolute w-5 h-5 rounded-full ${colorMap[color]} opacity-10`} />
+    </div>
+    <!-- Line -->
+    <div class={`flex-1 h-[2px] ${colorMap[color]} opacity-20 rounded-full`} />
+  </div>
+</div>

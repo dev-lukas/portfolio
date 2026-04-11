@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/global/Navbar.astro';
+import ScrollProgress from '../components/global/ScrollProgress.astro';
+import HeroSection from '../components/hero/HeroSection.astro';
+import ProjectsOrchestrator from '../components/projects/ProjectsOrchestrator.astro';
+import SectionDivider from '../components/global/SectionDivider.astro';
+import FirePhenixCard from '../components/projects/FirePhenixCard.astro';
+import HomeserverCard from '../components/projects/HomeserverCard.astro';
+import DevOpsCard from '../components/projects/DevOpsCard.astro';
+import AboutSection from '../components/about/AboutSection.astro';
+import ContactSection from '../components/contact/ContactSection.astro';
+import Footer from '../components/global/Footer.astro';
+import BerlinCursor from '../components/global/BerlinCursor.astro';
+---
+
+<Layout>
+  <Navbar />
+  <ScrollProgress />
+  <BerlinCursor />
+
+  <main>
+    <HeroSection />
+
+    <ProjectsOrchestrator>
+      <div id="projects">
+        <DevOpsCard />
+        <SectionDivider color="yellow" />
+        <HomeserverCard />
+        <SectionDivider color="blue" />
+        <FirePhenixCard />
+      </div>
+    </ProjectsOrchestrator>
+
+    <SectionDivider color="green" />
+
+    <AboutSection />
+
+    <SectionDivider color="blue" />
+
+    <ContactSection />
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Scroll-triggered reveal animations for all .reveal-up elements
+  const revealElements = document.querySelectorAll('.reveal-up');
+
+  revealElements.forEach((el) => {
+    gsap.fromTo(
+      el,
+      {
+        y: 40,
+        opacity: 0,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      }
+    );
+  });
+
+  // Fade out hero on scroll for cinematic exit
+  const scrollHint = document.getElementById('hero-scroll-hint');
+  if (scrollHint) {
+    gsap.to(scrollHint, {
+      opacity: 0,
+      y: -20,
+      scrollTrigger: {
+        trigger: '#hero',
+        start: '20% top',
+        end: '40% top',
+        scrub: true,
+      },
+    });
+  }
+</script>
