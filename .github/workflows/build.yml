@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  REGISTRY: 192.168.178.13:5000
+  REGISTRY: registry.lukas-roth.dev
   IMAGE_NAME: portfolio
 
 jobs:
