@@ -22,7 +22,16 @@ jobs:
     with:
       image_name: portfolio
       node_version: "22"
-      smoke_path: /
-      deploy: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
+      test_command: npm test
+      smoke_paths: |
+        /
+        /favicon.svg
+    secrets: inherit
+
+  deploy:
+    needs: portfolio
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
+    uses: dev-lukas/ci-cd-actions/.github/workflows/deploy-service.yml@main
+    with:
       deploy_services: portfolio
     secrets: inherit
