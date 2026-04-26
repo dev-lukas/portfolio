@@ -28,7 +28,7 @@ export const projects: Project[] = [
       'Vue 3 + TypeScript + Pinia SPA with Chart.js dashboards and activity heatmaps',
       'Steam OpenID authentication with cross-platform account linking via verification codes',
       'Docker Compose orchestration: MariaDB, Valkey, TeamSpeak, Flask API, Vite frontend',
-      'GitHub Actions CI/CD deploying to Hetzner VPS via SSH with systemd service management',
+      'GitHub Actions CI/CD building images, publishing them, and triggering the self-hosted runner to update the Docker Compose stack',
     ],
     tech: [
       { name: 'Flask', color: '#E8E8ED' },
