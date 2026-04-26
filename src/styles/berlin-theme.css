@@ -1,16 +1,3 @@
-/* Berlin-themed custom cursor - desktop only */
-@media (pointer: fine) and (min-width: 1024px) {
-  body.custom-cursor-enabled {
-    cursor: none;
-  }
-
-  body.custom-cursor-enabled a,
-  body.custom-cursor-enabled button,
-  body.custom-cursor-enabled [role="button"] {
-    cursor: none;
-  }
-}
-
 /* Berlin street sign style */
 .berlin-street-sign {
   display: inline-flex;

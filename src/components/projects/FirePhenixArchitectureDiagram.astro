@@ -1,0 +1,394 @@
+---
+import FirePhenixDiagramSvg from './FirePhenixDiagramSvg.astro';
+---
+
+<div class="firephenix-diagram" data-firephenix-diagram>
+  <div class="diagram-toolbar">
+    <div>
+      <p class="diagram-eyebrow">Deploy + runtime map</p>
+      <h3>FirePhenix System Flow</h3>
+    </div>
+    <button class="diagram-expand" type="button" aria-label="Open FirePhenix architecture diagram" data-diagram-open>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M15 3h6v6" />
+        <path d="M21 3l-7 7" />
+        <path d="M9 21H3v-6" />
+        <path d="M3 21l7-7" />
+      </svg>
+    </button>
+  </div>
+
+  <button class="diagram-preview" type="button" aria-label="Open FirePhenix architecture diagram" data-diagram-open>
+    <FirePhenixDiagramSvg />
+  </button>
+
+  <div class="diagram-metrics" aria-label="FirePhenix architecture highlights">
+    <div>
+      <span>Runner</span>
+      <strong class="runner-value">Self-Hosted<br />HomeServer Runner</strong>
+    </div>
+    <div>
+      <span>Data bus</span>
+      <strong>Valkey pub/sub</strong>
+    </div>
+    <div>
+      <span>Storage</span>
+      <strong>MariaDB</strong>
+    </div>
+  </div>
+</div>
+
+<dialog class="diagram-dialog" data-diagram-dialog aria-label="Expanded FirePhenix architecture diagram">
+  <div class="dialog-panel">
+    <div class="dialog-topbar">
+      <div>
+        <p class="diagram-eyebrow">FirePhenix architecture</p>
+        <h3>Deploy pipeline, API, bots and data flow</h3>
+      </div>
+      <button class="dialog-close" type="button" aria-label="Close architecture diagram" data-diagram-close>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18 6L6 18" />
+          <path d="M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="dialog-diagram">
+      <FirePhenixDiagramSvg large />
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const diagramRoots = document.querySelectorAll('[data-firephenix-diagram]');
+
+  diagramRoots.forEach((root) => {
+    const dialog = root.nextElementSibling as HTMLDialogElement | null;
+    if (!dialog) return;
+
+    const openButtons = root.querySelectorAll('[data-diagram-open]');
+    const closeButton = dialog.querySelector('[data-diagram-close]');
+
+    openButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        if (typeof dialog.showModal === 'function') {
+          dialog.showModal();
+        } else {
+          dialog.setAttribute('open', '');
+        }
+      });
+    });
+
+    closeButton?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  });
+</script>
+
+<style>
+  .firephenix-diagram {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(232, 93, 44, 0.16);
+    border-radius: 14px;
+    background:
+      linear-gradient(145deg, rgba(26, 26, 38, 0.9), rgba(10, 10, 15, 0.96)),
+      radial-gradient(circle at 72% 18%, rgba(232, 93, 44, 0.2), transparent 32%);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .diagram-toolbar,
+  .dialog-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1rem 0.75rem;
+  }
+
+  .diagram-eyebrow {
+    margin: 0 0 0.25rem;
+    color: rgba(144, 144, 160, 0.78);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .diagram-toolbar h3,
+  .dialog-topbar h3 {
+    margin: 0;
+    color: var(--color-text-accent);
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  .diagram-expand,
+  .dialog-close {
+    display: inline-grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    color: var(--color-text-secondary);
+    background: rgba(18, 18, 26, 0.76);
+    transition: border-color 180ms ease, color 180ms ease, background 180ms ease, transform 180ms ease;
+  }
+
+  .diagram-expand:hover,
+  .dialog-close:hover {
+    border-color: rgba(232, 93, 44, 0.45);
+    color: var(--color-text-accent);
+    background: rgba(232, 93, 44, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .diagram-expand svg,
+  .dialog-close svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+  }
+
+  .diagram-preview {
+    display: block;
+    width: 100%;
+    padding: 0 0.75rem 0.75rem;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    cursor: zoom-in;
+  }
+
+  .diagram-preview :global(svg),
+  .dialog-diagram :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .diagram-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(10, 10, 15, 0.48);
+  }
+
+  .diagram-metrics div {
+    min-width: 0;
+    padding: 0.8rem 0.95rem;
+  }
+
+  .diagram-metrics div + div {
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .diagram-metrics span,
+  .diagram-metrics strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .diagram-metrics span {
+    color: rgba(144, 144, 160, 0.76);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+  }
+
+  .diagram-metrics strong {
+    margin-top: 0.2rem;
+    color: var(--color-text-accent);
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .diagram-metrics .runner-value {
+    font-size: 0.72rem;
+    line-height: 1.18;
+    white-space: normal;
+  }
+
+  .diagram-dialog {
+    position: fixed;
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    width: min(1120px, calc(100vw - 2rem));
+    max-height: min(820px, calc(100vh - 2rem));
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 16px;
+    color: var(--color-text-primary);
+    background: transparent;
+  }
+
+  .diagram-dialog::backdrop {
+    background: rgba(3, 3, 7, 0.78);
+    backdrop-filter: blur(12px);
+  }
+
+  .dialog-panel {
+    overflow: hidden;
+    border: 1px solid rgba(232, 93, 44, 0.18);
+    border-radius: 16px;
+    background:
+      linear-gradient(145deg, rgba(18, 18, 26, 0.98), rgba(10, 10, 15, 0.98)),
+      radial-gradient(circle at 68% 20%, rgba(232, 93, 44, 0.18), transparent 34%);
+    box-shadow: 0 28px 110px rgba(0, 0, 0, 0.58);
+  }
+
+  .dialog-topbar {
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .dialog-diagram {
+    max-height: calc(100vh - 8.5rem);
+    overflow: auto;
+    padding: 1rem;
+  }
+
+  :global(.firephenix-architecture-svg .diagram-bg) {
+    fill: rgba(10, 10, 15, 0.74);
+  }
+
+  :global(.firephenix-architecture-svg .diagram-grid) {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.045);
+    stroke-width: 1;
+  }
+
+  :global(.firephenix-architecture-svg .scope-shell) {
+    fill: rgba(18, 18, 26, 0.26);
+    stroke: rgba(255, 255, 255, 0.07);
+    stroke-width: 1;
+  }
+
+  :global(.firephenix-architecture-svg .delivery-shell) {
+    stroke: rgba(76, 175, 80, 0.16);
+  }
+
+  :global(.firephenix-architecture-svg .runtime-shell) {
+    stroke: rgba(232, 93, 44, 0.14);
+  }
+
+  :global(.firephenix-architecture-svg .lane-labels text) {
+    fill: rgba(144, 144, 160, 0.42);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  :global(.firephenix-architecture-svg .architecture-link) {
+    fill: none;
+    stroke-linecap: round;
+    stroke-width: 2.4;
+    stroke-dasharray: 12 18;
+    animation: fp-flow 4.2s linear infinite;
+    animation-delay: var(--delay);
+    filter: url(#fp-glow);
+  }
+
+  :global(.firephenix-architecture-svg.is-large .architecture-link) {
+    filter: url(#fp-glow-large);
+  }
+
+  :global(.firephenix-architecture-svg .tone-fire) {
+    --node-color: #E85D2C;
+    stroke: rgba(232, 93, 44, 0.82);
+  }
+
+  :global(.firephenix-architecture-svg .tone-blue) {
+    --node-color: #4A8FE7;
+    stroke: rgba(74, 143, 231, 0.8);
+  }
+
+  :global(.firephenix-architecture-svg .tone-green) {
+    --node-color: #4CAF50;
+    stroke: rgba(76, 175, 80, 0.78);
+  }
+
+  :global(.firephenix-architecture-svg .tone-purple) {
+    --node-color: #8B7CFF;
+    stroke: rgba(139, 124, 255, 0.76);
+  }
+
+  :global(.firephenix-architecture-svg .node-shell) {
+    fill: url(#fp-panel);
+    stroke: color-mix(in srgb, var(--node-color) 42%, transparent);
+    stroke-width: 1;
+  }
+
+  :global(.firephenix-architecture-svg.is-large .node-shell) {
+    fill: url(#fp-panel-large);
+  }
+
+  :global(.firephenix-architecture-svg .node-accent) {
+    fill: var(--node-color);
+    opacity: 0.82;
+  }
+
+  :global(.firephenix-architecture-svg .node-kicker) {
+    fill: rgba(144, 144, 160, 0.74);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  :global(.firephenix-architecture-svg .node-label) {
+    fill: var(--color-text-accent);
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  :global(.firephenix-architecture-svg .node-detail) {
+    fill: rgba(144, 144, 160, 0.86);
+    font-family: var(--font-body);
+    font-size: 11px;
+  }
+
+  @keyframes fp-flow {
+    to {
+      stroke-dashoffset: -120;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .diagram-toolbar h3,
+    .dialog-topbar h3 {
+      font-size: 0.9rem;
+    }
+
+    .diagram-metrics {
+      grid-template-columns: 1fr;
+    }
+
+    .diagram-metrics div + div {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-left: 0;
+    }
+
+    .dialog-diagram {
+      padding: 0.6rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.firephenix-architecture-svg .architecture-link) {
+      animation: none;
+      stroke-dasharray: none;
+    }
+  }
+</style>

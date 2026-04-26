@@ -1,5 +1,6 @@
 ---
 import TechBadge from './TechBadge.astro';
+import FirePhenixArchitectureDiagram from './FirePhenixArchitectureDiagram.astro';
 import { projects } from '../../data/projects';
 
 const project = projects.find((p) => p.id === 'firephenix')!;
@@ -17,7 +18,7 @@ const project = projects.find((p) => p.id === 'firephenix')!;
     <div class="reveal-up mb-16">
       <div class="inline-flex items-center gap-3 mb-4">
         <span class="px-3 py-1 text-xs font-mono text-accent-fire bg-accent-fire/10 rounded-full border border-accent-fire/20">
-          Featured Project
+          Community Platform
         </span>
       </div>
       <h2 class="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-text-accent">
@@ -92,52 +93,11 @@ const project = projects.find((p) => p.id === 'firephenix')!;
         </div>
       </div>
 
-      <!-- Right: Browser mockup carousel -->
+      <!-- Right: Architecture diagram -->
       <div class="reveal-up">
-        <div class="relative" id="fp-carousel">
-          <!-- Browser frame -->
-          <div class="browser-mockup">
-            <div class="bg-bg-tertiary rounded-t-lg px-3 py-2.5 flex items-center gap-2 border border-white/5 border-b-0">
-              <div class="flex-1">
-                <div id="fp-url-bar" class="bg-bg-primary/60 rounded px-3 py-1 text-xs text-text-secondary/60 font-mono transition-all duration-300">firephenix.de</div>
-              </div>
-              <div class="flex gap-1.5 items-center">
-                <span class="w-[18px] h-[18px] flex items-center justify-center rounded-sm text-text-secondary/40">
-                  <svg viewBox="0 0 10 10" class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="1.2"><line x1="1" y1="7" x2="9" y2="7"/></svg>
-                </span>
-                <span class="w-[18px] h-[18px] flex items-center justify-center rounded-sm text-text-secondary/40">
-                  <svg viewBox="0 0 10 10" class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1.5" y="1.5" width="7" height="7"/></svg>
-                </span>
-                <span class="w-[18px] h-[18px] flex items-center justify-center rounded-sm text-text-secondary/40">
-                  <svg viewBox="0 0 10 10" class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="1.2"><line x1="2" y1="2" x2="8" y2="8"/><line x1="8" y1="2" x2="2" y2="8"/></svg>
-                </span>
-              </div>
-            </div>
-            <!-- Screenshot area -->
-            <div class="relative bg-bg-secondary rounded-b-lg border border-white/5 border-t-0 overflow-hidden aspect-[16/10]">
-              <img id="fp-slide-0" src="/images/projects/fp-home.png" alt="FirePhenix home" class="fp-slide absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 opacity-100" />
-              <img id="fp-slide-1" src="/images/projects/fp-ranking.png" alt="FirePhenix ranking" class="fp-slide absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 opacity-0" />
-              <img id="fp-slide-2" src="/images/projects/fp-profile.png" alt="FirePhenix profile" class="fp-slide absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 opacity-0" />
-            </div>
-          </div>
+        <FirePhenixArchitectureDiagram />
 
-          <!-- Navigation arrows -->
-          <button id="fp-prev" class="absolute left-[-18px] top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-bg-secondary/80 border border-white/10 flex items-center justify-center text-text-secondary hover:text-text-accent hover:border-white/25 transition-colors duration-200">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button id="fp-next" class="absolute right-[-18px] top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-bg-secondary/80 border border-white/10 flex items-center justify-center text-text-secondary hover:text-text-accent hover:border-white/25 transition-colors duration-200">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-          </button>
-
-          <!-- Dots indicator -->
-          <div class="flex justify-center gap-2 mt-4">
-            <button class="fp-dot w-2 h-2 rounded-full bg-accent-fire transition-colors duration-300" data-index="0"></button>
-            <button class="fp-dot w-2 h-2 rounded-full bg-text-secondary/30 transition-colors duration-300" data-index="1"></button>
-            <button class="fp-dot w-2 h-2 rounded-full bg-text-secondary/30 transition-colors duration-300" data-index="2"></button>
-          </div>
-        </div>
-
-        <!-- Architecture mini-cards below the mockup -->
+        <!-- Architecture mini-cards below the diagram -->
         <div class="mt-8 grid grid-cols-2 gap-3">
           {[
             { icon: '🤖', label: 'Discord Bot', detail: 'Event-driven voice tracking & AI chat via OpenRouter' },
@@ -180,31 +140,12 @@ const project = projects.find((p) => p.id === 'firephenix')!;
             <svg class="w-4 h-4 text-accent-fire" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
             <span class="text-xs font-medium text-text-accent">CI/CD Pipeline</span>
           </div>
-          <p class="text-[11px] text-text-secondary/60 leading-relaxed">GitHub Actions deploy to Hetzner VPS via SSH -backend restarts Flask + bot systemd services, frontend builds and syncs static assets to Nginx.</p>
+          <p class="text-[11px] text-text-secondary/60 leading-relaxed">GitHub Actions builds and publishes images, then triggers the self-hosted HomeServer runner to pull updates and roll out the Docker Compose stack with health checks.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<script>
-  const slides = document.querySelectorAll('.fp-slide') as NodeListOf<HTMLElement>;
-  const dots = document.querySelectorAll('.fp-dot') as NodeListOf<HTMLElement>;
-  const urlBar = document.getElementById('fp-url-bar')!;
-  const urls = ['firephenix.de', 'firephenix.de/ranking', 'firephenix.de/profile'];
-  let current = 0;
-
-  function goTo(idx: number) {
-    slides.forEach((s, i) => { s.style.opacity = i === idx ? '1' : '0'; });
-    dots.forEach((d, i) => { d.className = `fp-dot w-2 h-2 rounded-full transition-colors duration-300 ${i === idx ? 'bg-accent-fire' : 'bg-text-secondary/30'}`; });
-    urlBar.textContent = urls[idx];
-    current = idx;
-  }
-
-  document.getElementById('fp-prev')!.addEventListener('click', () => goTo((current - 1 + slides.length) % slides.length));
-  document.getElementById('fp-next')!.addEventListener('click', () => goTo((current + 1) % slides.length));
-  dots.forEach((d) => d.addEventListener('click', () => goTo(Number(d.dataset.index))));
-</script>
 
 <script>
   // Ember particle effect

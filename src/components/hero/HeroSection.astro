@@ -242,72 +242,132 @@
   }
 
   // ============================================
-  // 3. LOG STREAMS - scrolling terminal output
+  // 3. CI/CD TOPOLOGY + SERVICE GRAPH
   // ============================================
-  interface LogStream {
-    x: number; y: number; lines: string[]; scrollOffset: number;
-    speed: number; opacity: number; width: number; lineH: number;
+  interface InfraMap {
+    x: number; y: number; scale: number; opacity: number; kind: 'pipeline' | 'services'; pulse: number; speed: number;
   }
 
-  const logMessages = [
-    '[INFO] Pulling image registry.io/app:latest',
-    '[INFO] Container started on port 8080',
-    '[WARN] High memory usage: 87%',
-    '[INFO] Health check passed ✓',
-    '[INFO] Scaling replicas: 2 → 4',
-    '[INFO] Certificate renewed: *.example.dev',
-    '[INFO] Backup completed: 2.4GB',
-    '[INFO] DNS record updated: A → 10.0.1.5',
-    '[INFO] Rolling update: 3/5 pods ready',
-    '[WARN] Disk usage: /dev/sda1 78%',
-    '[INFO] Metrics exported to Prometheus',
-    '[INFO] SSH tunnel established → bastion',
-    '[INFO] Firewall rule applied: allow 443/tcp',
-    '[INFO] Snapshot created: vm-102-disk-0',
-    '[INFO] Cron job executed: cleanup.sh',
-    '[INFO] Load balancer: 4 healthy backends',
-  ];
+  const infraMaps: InfraMap[] = isMobile
+    ? [
+        { x: 28, y: canvas.height * 0.58, scale: 0.82, opacity: BASE_OPACITY + 0.08, kind: 'pipeline', pulse: 0, speed: 0.006 },
+      ]
+    : [
+        { x: 80, y: canvas.height * 0.18, scale: 1, opacity: BASE_OPACITY + 0.08, kind: 'pipeline', pulse: 0, speed: 0.005 },
+        { x: canvas.width - 420, y: canvas.height * 0.58, scale: 1, opacity: BASE_OPACITY + 0.07, kind: 'services', pulse: 0.35, speed: 0.004 },
+      ];
 
-  const logStreams: LogStream[] = [];
-  const logCount = isMobile ? 1 : 3;
-  for (let i = 0; i < logCount; i++) {
-    const count = 5 + Math.floor(Math.random() * 4);
-    const lines: string[] = [];
-    for (let j = 0; j < count; j++) lines.push(logMessages[Math.floor(Math.random() * logMessages.length)]);
-    logStreams.push({
-      x: 50 + Math.random() * (canvas.width - 300),
-      y: 40 + Math.random() * (canvas.height - 200),
-      lines, scrollOffset: 0, speed: 0.15 + Math.random() * 0.2,
-      opacity: BASE_OPACITY + Math.random() * 0.06,
-      width: 220 + Math.random() * 60, lineH: 11,
-    });
-  }
-
-  function drawLogStream(l: LogStream) {
-    ctx.save(); ctx.globalAlpha = l.opacity;
-    const visibleLines = 4;
-    const h = visibleLines * l.lineH + 18;
-    // Terminal frame
-    drawRoundRect(l.x, l.y, l.width, h, 3);
-    ctx.fillStyle = '#0A0A0F'; ctx.fill();
-    ctx.strokeStyle = '#9090A040'; ctx.lineWidth = 0.5; ctx.stroke();
-    // Title bar
-    ctx.fillStyle = '#9090A0'; ctx.font = '7px monospace'; ctx.textAlign = 'left';
-    ctx.fillText('$ logs -f', l.x + 6, l.y + 9);
-    // Clip & draw scrolling lines
+  function drawInfraNode(x: number, y: number, w: number, h: number, label: string, color: string, shape: 'box' | 'circle' | 'db' = 'box') {
     ctx.save();
-    ctx.beginPath(); ctx.rect(l.x + 2, l.y + 14, l.width - 4, h - 16); ctx.clip();
-    const startIdx = Math.floor(l.scrollOffset / l.lineH);
-    const yOff = -(l.scrollOffset % l.lineH);
-    for (let i = 0; i < visibleLines + 1; i++) {
-      const idx = (startIdx + i) % l.lines.length;
-      const ly = l.y + 22 + i * l.lineH + yOff;
-      const line = l.lines[idx];
-      ctx.fillStyle = line.includes('[WARN]') ? '#F5C518' : '#4CAF50';
-      ctx.font = '7px monospace';
-      ctx.fillText(line.substring(0, Math.floor(l.width / 4.2)), l.x + 6, ly);
+    ctx.strokeStyle = color;
+    ctx.fillStyle = 'rgba(18, 18, 26, 0.54)';
+    ctx.lineWidth = 1;
+
+    if (shape === 'circle') {
+      ctx.beginPath(); ctx.arc(x + w / 2, y + h / 2, Math.min(w, h) / 2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    } else if (shape === 'db') {
+      ctx.beginPath();
+      ctx.ellipse(x + w / 2, y + 7, w / 2, 6, 0, 0, Math.PI * 2);
+      ctx.rect(x, y + 7, w, h - 14);
+      ctx.ellipse(x + w / 2, y + h - 7, w / 2, 6, 0, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+    } else {
+      drawRoundRect(x, y, w, h, 6); ctx.fill(); ctx.stroke();
     }
+
+    ctx.fillStyle = '#E8E8ED';
+    ctx.font = '8px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(label, x + w / 2, y + h / 2 + 3);
     ctx.restore();
+  }
+
+  function drawInfraEdge(x1: number, y1: number, x2: number, y2: number, color: string, pulse: number) {
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 6]);
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    const px = x1 + (x2 - x1) * pulse;
+    const py = y1 + (y2 - y1) * pulse;
+    ctx.beginPath(); ctx.arc(px, py, 2.6, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 8;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawPipelineTopology(map: InfraMap) {
+    ctx.save();
+    ctx.globalAlpha = map.opacity;
+    ctx.translate(map.x, map.y);
+    ctx.scale(map.scale, map.scale);
+
+    drawRoundRect(0, 0, 330, 118, 12);
+    ctx.fillStyle = 'rgba(10, 10, 15, 0.28)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(76, 175, 80, 0.25)'; ctx.lineWidth = 0.8; ctx.stroke();
+
+    ctx.fillStyle = 'rgba(144, 144, 160, 0.72)';
+    ctx.font = '8px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('ci/cd topology', 14, 18);
+
+    const nodes = [
+      { x: 20, y: 46, w: 52, h: 26, label: 'repo', color: '#4CAF50' },
+      { x: 98, y: 34, w: 58, h: 26, label: 'build', color: '#4CAF50' },
+      { x: 98, y: 72, w: 58, h: 26, label: 'scan', color: '#F5C518' },
+      { x: 186, y: 46, w: 62, h: 26, label: 'image', color: '#4A8FE7' },
+      { x: 272, y: 46, w: 42, h: 26, label: 'run', color: '#E85D2C' },
+    ];
+
+    drawInfraEdge(72, 59, 98, 47, '#4CAF50', map.pulse);
+    drawInfraEdge(72, 59, 98, 85, '#4CAF50', (map.pulse + 0.45) % 1);
+    drawInfraEdge(156, 47, 186, 59, '#F5C518', (map.pulse + 0.25) % 1);
+    drawInfraEdge(156, 85, 186, 59, '#F5C518', (map.pulse + 0.65) % 1);
+    drawInfraEdge(248, 59, 272, 59, '#4A8FE7', (map.pulse + 0.15) % 1);
+    nodes.forEach((n) => drawInfraNode(n.x, n.y, n.w, n.h, n.label, n.color));
+
+    ctx.restore();
+  }
+
+  function drawServiceGraph(map: InfraMap) {
+    ctx.save();
+    ctx.globalAlpha = map.opacity;
+    ctx.translate(map.x, map.y);
+    ctx.scale(map.scale, map.scale);
+
+    drawRoundRect(0, 0, 340, 150, 12);
+    ctx.fillStyle = 'rgba(10, 10, 15, 0.28)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(74, 143, 231, 0.24)'; ctx.lineWidth = 0.8; ctx.stroke();
+
+    ctx.fillStyle = 'rgba(144, 144, 160, 0.72)';
+    ctx.font = '8px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('service graph', 14, 18);
+
+    const ingress = { x: 22, y: 63, w: 58, h: 28 };
+    const web = { x: 122, y: 38, w: 54, h: 26 };
+    const api = { x: 122, y: 92, w: 54, h: 26 };
+    const worker = { x: 216, y: 92, w: 62, h: 26 };
+    const cache = { x: 236, y: 34, w: 48, h: 26 };
+    const db = { x: 292, y: 82, w: 32, h: 42 };
+
+    drawInfraEdge(80, 77, 122, 51, '#4A8FE7', map.pulse);
+    drawInfraEdge(80, 77, 122, 105, '#4A8FE7', (map.pulse + 0.4) % 1);
+    drawInfraEdge(176, 105, 216, 105, '#8B7CFF', (map.pulse + 0.55) % 1);
+    drawInfraEdge(176, 105, 236, 47, '#E85D2C', (map.pulse + 0.2) % 1);
+    drawInfraEdge(278, 105, 292, 103, '#E85D2C', (map.pulse + 0.72) % 1);
+
+    drawInfraNode(ingress.x, ingress.y, ingress.w, ingress.h, 'edge', '#4A8FE7');
+    drawInfraNode(web.x, web.y, web.w, web.h, 'web', '#4A8FE7');
+    drawInfraNode(api.x, api.y, api.w, api.h, 'api', '#4A8FE7');
+    drawInfraNode(worker.x, worker.y, worker.w, worker.h, 'worker', '#8B7CFF');
+    drawInfraNode(cache.x, cache.y, cache.w, cache.h, 'cache', '#E85D2C');
+    drawInfraNode(db.x, db.y, db.w, db.h, 'db', '#E85D2C', 'db');
+
     ctx.restore();
   }
 
@@ -415,61 +475,6 @@
   }
 
   // ============================================
-  // 6. GIT ACTIVITY - commit hashes scrolling
-  // ============================================
-  interface GitLine {
-    x: number; y: number; speed: number; opacity: number;
-    hash: string; msg: string; time: string;
-  }
-
-  const commitMsgs = [
-    'fix: resolve race condition in worker',
-    'feat: add health check endpoint',
-    'chore: bump dependencies',
-    'fix: correct nginx proxy headers',
-    'feat: add prometheus metrics',
-    'refactor: extract auth middleware',
-    'ci: add staging deploy step',
-    'fix: handle graceful shutdown',
-    'feat: add redis caching layer',
-    'docs: update runbook for failover',
-  ];
-
-  const gitLines: GitLine[] = [];
-  const gitCount = isMobile ? 2 : 4;
-  for (let i = 0; i < gitCount; i++) {
-    const hash = Math.random().toString(16).substring(2, 9);
-    gitLines.push({
-      x: canvas.width + Math.random() * 300,
-      y: 30 + Math.random() * (canvas.height - 60),
-      speed: 0.15 + Math.random() * 0.2,
-      opacity: BASE_OPACITY + Math.random() * 0.06,
-      hash, msg: commitMsgs[Math.floor(Math.random() * commitMsgs.length)],
-      time: `${Math.floor(Math.random() * 23)}h ago`,
-    });
-  }
-
-  function drawGitLine(g: GitLine) {
-    ctx.save(); ctx.globalAlpha = g.opacity;
-    // Commit dot
-    ctx.beginPath(); ctx.arc(g.x, g.y, 3, 0, Math.PI * 2);
-    ctx.fillStyle = '#4CAF50'; ctx.fill();
-    // Branch line through dot
-    ctx.beginPath(); ctx.moveTo(g.x - 10, g.y); ctx.lineTo(g.x + 10, g.y);
-    ctx.strokeStyle = '#4CAF50'; ctx.lineWidth = 1; ctx.stroke();
-    // Hash
-    ctx.fillStyle = '#F5C518'; ctx.font = '7px monospace'; ctx.textAlign = 'left';
-    ctx.fillText(g.hash, g.x + 16, g.y - 2);
-    // Message
-    ctx.fillStyle = '#9090A0'; ctx.font = '7px monospace';
-    ctx.fillText(g.msg.substring(0, 35), g.x + 60, g.y - 2);
-    // Time
-    ctx.fillStyle = '#9090A060';
-    ctx.fillText(g.time, g.x + 16, g.y + 8);
-    ctx.restore();
-  }
-
-  // ============================================
   // ANIMATION LOOP
   // ============================================
   let frame = 0;
@@ -509,11 +514,13 @@
       if (p.opacity > 0.005) drawPod(p);
     });
 
-    // 3. Log streams
-    logStreams.forEach((l) => {
-      l.scrollOffset += l.speed;
-      if (l.scrollOffset > l.lines.length * l.lineH) l.scrollOffset = 0;
-      drawLogStream(l);
+    // 3. CI/CD topology + service graph
+    infraMaps.forEach((map) => {
+      map.pulse = (map.pulse + map.speed) % 1;
+      if (!isMobile && map.kind === 'services') {
+        map.y += Math.sin(frame * 0.004) * 0.02;
+      }
+      map.kind === 'pipeline' ? drawPipelineTopology(map) : drawServiceGraph(map);
     });
 
     // 4. Sparklines (live update)
@@ -536,19 +543,6 @@
         }
       });
       drawTopology(t);
-    });
-
-    // 6. Git lines (drift left)
-    gitLines.forEach((g) => {
-      g.x -= g.speed;
-      if (g.x < -350) {
-        g.x = canvas.width + 50 + Math.random() * 200;
-        g.y = 30 + Math.random() * (canvas.height - 60);
-        g.hash = Math.random().toString(16).substring(2, 9);
-        g.msg = commitMsgs[Math.floor(Math.random() * commitMsgs.length)];
-        g.time = `${Math.floor(Math.random() * 23)}h ago`;
-      }
-      drawGitLine(g);
     });
 
     requestAnimationFrame(animate);
