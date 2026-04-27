@@ -7,31 +7,67 @@ on:
     branches: [main]
   workflow_dispatch:
     inputs:
-      deploy:
-        description: Deploy to production after pushing the image
-        required: false
-        type: boolean
-        default: false
+      deploy_services:
+        description: Space, comma, or newline-separated services to deploy
+        required: true
+        type: string
+        default: portfolio
 
 permissions:
   contents: read
 
 jobs:
-  portfolio:
-    uses: dev-lukas/ci-cd-actions/.github/workflows/node-static.yml@main
+  checks:
+    uses: dev-lukas/ci-cd-actions/.github/workflows/node-checks.yml@main
     with:
-      image_name: portfolio
       node_version: "22"
       test_command: npm test
-      smoke_paths: |
-        /
-        /favicon.svg
+      build_command: npm run build
+      audit_command: npm audit --audit-level=critical
+
+  docker-build:
+    needs: checks
+    uses: dev-lukas/ci-cd-actions/.github/workflows/docker-build.yml@main
+    with:
+      image: local/portfolio:${{ github.sha }}
+      image_tags: |
+        registry.lukas-roth.dev/portfolio:${{ github.sha }}
+        registry.lukas-roth.dev/portfolio:latest
+      smoke_command: |
+        container_id="$(docker run -d --rm -p 127.0.0.1::80 "$IMAGE_UNDER_TEST")"
+        trap 'docker stop "$container_id" >/dev/null 2>&1 || true' EXIT
+        port="$(docker inspect --format '{{ (index (index .NetworkSettings.Ports "80/tcp") 0).HostPort }}' "$container_id")"
+        for path in / /favicon.svg; do
+          for attempt in $(seq 1 30); do
+            if curl -fsS "http://127.0.0.1:${port}${path}" >/dev/null; then
+              continue 2
+            fi
+            sleep 1
+          done
+          echo "Portfolio smoke failed for ${path}" >&2
+          docker logs "$container_id" >&2 || true
+          exit 1
+        done
+
+  publish:
+    needs: docker-build
+    if: ${{ github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') }}
+    uses: dev-lukas/ci-cd-actions/.github/workflows/docker-publish.yml@main
+    with:
+      registry: registry.lukas-roth.dev
+      registry_username: registry
+      image_tags: |
+        registry.lukas-roth.dev/portfolio:${{ github.sha }}
+        registry.lukas-roth.dev/portfolio:latest
     secrets: inherit
 
   deploy:
-    needs: portfolio
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
-    uses: dev-lukas/ci-cd-actions/.github/workflows/deploy-service.yml@main
+    needs: publish
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    uses: dev-lukas/ci-cd-actions/.github/workflows/compose-deploy.yml@main
     with:
-      deploy_services: portfolio
+      deploy_services: ${{ inputs.deploy_services }}
+      allowed_services: portfolio
+      deploy_path: /opt/firephenix
+      environment: production
     secrets: inherit
