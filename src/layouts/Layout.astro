@@ -63,6 +63,28 @@ const personSchema = {
   </body>
 </html>
 
+<script>
+  // Console easter egg for the curious devs who open the inspector
+  const title = 'color:#F5C518;font-weight:bold;font-family:monospace;font-size:13px';
+  const dim = 'color:#9090A0;font-family:monospace';
+  const link = 'color:#4A8FE7;font-family:monospace';
+
+  console.log('%cLukas Roth%c  ::  Developer & DevOps, Berlin', title, dim);
+  console.log('%cYou found the logs. Since you are already in here, run %clukas.hire()%c', dim, link, dim);
+
+  (window as any).lukas = {
+    hire() {
+      console.log('%caccess granted. lets talk.', 'color:#4CAF50;font-family:monospace;font-weight:bold');
+      console.table({
+        email: 'mail@lukas-roth.dev',
+        github: 'github.com/dev-lukas',
+        linkedin: 'linkedin.com/in/lukas-roth-358572419',
+      });
+      return 'mail@lukas-roth.dev';
+    },
+  };
+</script>
+
 <style is:global>
   @import '../styles/global.css';
 </style>
