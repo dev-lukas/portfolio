@@ -54,7 +54,7 @@ import Footer from '../components/global/Footer.astro';
   const revealElements = document.querySelectorAll('.reveal-up');
 
   if (prefersReducedMotion) {
-    // Skip motion entirely — show everything in place
+    // Skip motion entirely: show everything in place
     gsap.set(revealElements, { opacity: 1, y: 0 });
   } else {
   revealElements.forEach((el) => {

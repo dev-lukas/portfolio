@@ -88,10 +88,31 @@ import { stratoExperience } from '../../data/projects';
         ))}
       </div>
 
-      <!-- U-Bahn label -->
-      <div class="hidden md:flex items-center gap-2 mt-8 justify-center">
-        <div class="flex items-center justify-center w-6 h-6 rounded-full bg-accent-yellow text-bg-primary text-xs font-bold">U</div>
-        <span class="text-xs text-text-secondary/40 font-mono">Skills Line</span>
+      <!-- U-Bahn destination blind (BVG platform sign) -->
+      <div class="hidden md:flex items-center gap-2.5 mt-8 justify-center">
+        <div class="flex items-center justify-center w-6 h-6 rounded-[5px] bg-accent-yellow text-bg-primary text-sm font-extrabold leading-none shadow-sm">U</div>
+        <span class="text-xs text-text-accent/70 font-heading font-medium tracking-wide">Skills Line</span>
+        <span class="w-1 h-1 rounded-full bg-text-secondary/30" />
+        <span class="text-xs text-text-secondary/40 font-mono">Richtung Production</span>
+        <svg class="w-3.5 h-3.5 text-text-secondary/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ======================= -->
+    <!-- THE IONOS IMAGE FACTORY -->
+    <!-- ======================= -->
+    <div class="reveal-up mt-24">
+      <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-6">The IONOS Image Factory</h3>
+
+      <div class="max-w-3xl space-y-4">
+        <p class="text-text-secondary leading-relaxed">
+          Most of my day-to-day happens inside the <strong class="text-text-accent font-medium">Image Factory</strong>: the team and the fully automated pipeline behind it. It continuously pulls upcoming Linux releases, layers in IONOS-specific configuration, and runs security scans and tests around the clock, so a new operating system is production-ready the moment it ships. When <strong class="text-text-accent font-medium">Ubuntu 26.04 LTS</strong> launched, our customers could deploy it on <strong class="text-text-accent font-medium">day one</strong>, with no waiting for images to be hand-built.
+        </p>
+        <p class="text-text-secondary leading-relaxed">
+          The same philosophy reaches beyond the OS. We build <strong class="text-text-accent font-medium">CVE-free application containers</strong> used across the entire IONOS Group, with automated triage and patching baked into the pipeline. I also helped develop a <strong class="text-text-accent font-medium">converter that migrates legacy customer VMs from Virtuozzo to KVM</strong>, a large part of which I wrote myself, opening the door to platform modernization at scale.
+        </p>
       </div>
     </div>
   </div>

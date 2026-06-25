@@ -26,8 +26,14 @@ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) 
       <div class="lg:col-span-2 reveal-up">
         <div class="relative">
           <div class="relative w-full aspect-[3/4] rounded-2xl bg-bg-secondary border border-white/10 overflow-hidden group">
-            <img src="/images/hero/about-me.jpg" alt="Lukas Roth" class="absolute inset-0 w-full h-full object-cover" />
+            <img src="/images/hero/about-me.jpg" alt="Lukas Roth in Kyoto, Japan" class="absolute inset-0 w-full h-full object-cover" />
             <div class="absolute inset-0 bg-gradient-to-t from-bg-primary/40 via-transparent to-transparent pointer-events-none" />
+
+            <!-- Kyoto easter-egg: this clearly isn't Berlin -->
+            <div class="absolute inset-x-0 bottom-0 px-5 pt-12 pb-20 bg-gradient-to-t from-bg-primary/95 via-bg-primary/70 to-transparent opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
+              <p class="text-sm font-heading font-semibold text-text-accent">Well… this doesn't look like Berlin.</p>
+              <p class="mt-1 text-xs text-text-secondary font-mono">Kyoto, Japan. Turns out the homelab runs fine without me.</p>
+            </div>
           </div>
 
           <!-- Info card overlapping the photo -->
@@ -64,24 +70,16 @@ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) 
 
         <p class="reveal-up text-text-secondary leading-relaxed">
           Based in Berlin, I spend my free time pushing my homelab to its limits, trimming idle power consumption
-          to around 15 watts, and finding new things to self-host.
+          down as far as I can, and finding new things to self-host.
         </p>
 
         <!-- Interest tags -->
         <div class="reveal-up pt-4">
           <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-4">Interests</h3>
           <div class="flex flex-wrap gap-2">
-            {[
-              { label: 'Gaming', icon: '🎮' },
-              { label: 'Homelab', icon: '🖥️' },
-              { label: 'Privacy', icon: '🔒' },
-              { label: 'DevOps', icon: '⚙️' },
-              { label: 'Automation', icon: '🤖' },
-              { label: 'Networking', icon: '🌐' },
-            ].map((interest) => (
-              <span class="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-text-secondary bg-bg-secondary border border-white/5 rounded-full hover:border-accent-blue/20 hover:text-text-accent transition-all duration-300">
-                <span>{interest.icon}</span>
-                {interest.label}
+            {['Gaming', 'Homelab', 'Privacy', 'DevOps', 'Automation', 'Networking'].map((interest) => (
+              <span class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-text-secondary bg-bg-secondary border border-white/5 rounded-full hover:border-accent-blue/20 hover:text-text-accent transition-all duration-300">
+                {interest}
               </span>
             ))}
           </div>

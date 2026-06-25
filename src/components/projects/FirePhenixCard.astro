@@ -100,13 +100,12 @@ const project = projects.find((p) => p.id === 'firephenix')!;
         <!-- Architecture mini-cards below the diagram -->
         <div class="mt-8 grid grid-cols-2 gap-3">
           {[
-            { icon: '🤖', label: 'Discord Bot', detail: 'Event-driven voice tracking & AI chat via OpenRouter' },
-            { icon: '🎙️', label: 'TeamSpeak Bot', detail: 'Telnet ServerQuery with reconnect & backoff' },
-            { icon: '🗄️', label: 'Valkey Pub/Sub', detail: 'Async bot commands, caching & rate limiting' },
-            { icon: '📊', label: 'Chart.js Dashboards', detail: 'Heatmaps, rankings & usage analytics' },
+            { label: 'Discord Bot', detail: 'Event-driven voice tracking & AI chat via OpenRouter' },
+            { label: 'TeamSpeak Bot', detail: 'Telnet ServerQuery with reconnect & backoff' },
+            { label: 'Valkey Pub/Sub', detail: 'Async bot commands, caching & rate limiting' },
+            { label: 'Chart.js Dashboards', detail: 'Heatmaps, rankings & usage analytics' },
           ].map((card) => (
             <div class="reveal-up p-3 rounded-lg bg-bg-secondary/50 border border-white/5 hover:border-accent-fire/20 transition-colors duration-300">
-              <div class="text-lg mb-1">{card.icon}</div>
               <div class="text-xs font-medium text-text-accent">{card.label}</div>
               <div class="text-[10px] text-text-secondary mt-0.5">{card.detail}</div>
             </div>
