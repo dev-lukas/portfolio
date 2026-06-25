@@ -48,9 +48,15 @@ import Footer from '../components/global/Footer.astro';
 
   gsap.registerPlugin(ScrollTrigger);
 
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   // Scroll-triggered reveal animations for all .reveal-up elements
   const revealElements = document.querySelectorAll('.reveal-up');
 
+  if (prefersReducedMotion) {
+    // Skip motion entirely — show everything in place
+    gsap.set(revealElements, { opacity: 1, y: 0 });
+  } else {
   revealElements.forEach((el) => {
     gsap.fromTo(
       el,
@@ -71,10 +77,11 @@ import Footer from '../components/global/Footer.astro';
       }
     );
   });
+  }
 
   // Fade out hero on scroll for cinematic exit
   const scrollHint = document.getElementById('hero-scroll-hint');
-  if (scrollHint) {
+  if (scrollHint && !prefersReducedMotion) {
     gsap.to(scrollHint, {
       opacity: 0,
       y: -20,

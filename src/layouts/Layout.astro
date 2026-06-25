@@ -11,9 +11,23 @@ interface Props {
 }
 
 const {
-  title = 'Lukas Roth -Developer from Berlin',
-  description = 'Portfolio of Lukas Roth. Developer, DevOps, Berlin. Building gaming communities, automating infrastructure, and crafting digital experiences.',
+  title = 'Lukas Roth — Developer & DevOps Engineer from Berlin',
+  description = 'Portfolio of Lukas Roth. Developer & DevOps engineer in Berlin. Building gaming communities, automating infrastructure, and crafting digital experiences.',
 } = Astro.props;
+
+// Absolute URLs for canonical + social cards (requires `site` in astro.config)
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/images/hero/hero.jpg', Astro.site);
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Lukas Roth',
+  jobTitle: 'DevOps Engineer',
+  url: canonicalURL.href,
+  address: { '@type': 'PostalAddress', addressLocality: 'Berlin', addressCountry: 'DE' },
+  sameAs: ['https://github.com/dev-lukas', 'https://www.linkedin.com/in/lukas-roth-358572419'],
+};
 ---
 
 <!doctype html>
@@ -23,8 +37,26 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="author" content="Lukas Roth" />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="Lukas Roth" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
   </head>
   <body>
     <slot />

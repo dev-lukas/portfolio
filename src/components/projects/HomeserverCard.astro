@@ -29,7 +29,7 @@ const project = projects.find((p) => p.id === 'homeserver')!;
     <!-- THE BUILD + GALLERY   -->
     <!-- ===================== -->
     <div class="reveal-up mb-20">
-      <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-6">The Build -Zero Moving Parts</h3>
+      <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-6">The Build — Zero Moving Parts</h3>
 
       <!-- Hardware spec cards -->
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -78,10 +78,10 @@ const project = projects.find((p) => p.id === 'homeserver')!;
             </div>
             <div>
               <div class="text-xs text-text-secondary/50 uppercase tracking-wider">Storage</div>
-              <div class="text-sm font-medium text-text-accent">24 TB SSD</div>
+              <div class="text-sm font-medium text-text-accent">36 TB SSD</div>
             </div>
           </div>
-          <p class="text-xs text-text-secondary/60">All-flash storage in a ZFS array -silent, fast, power efficient and reliable</p>
+          <p class="text-xs text-text-secondary/60">All-flash storage in a ZFS array — silent, fast, power efficient and reliable</p>
         </div>
 
         <div class="p-4 rounded-xl bg-bg-secondary/60 border border-white/5 hover:border-accent-yellow/20 transition-colors duration-300">
@@ -149,7 +149,7 @@ const project = projects.find((p) => p.id === 'homeserver')!;
             Every component was carefully selected not just for performance, but for power efficiency. With no moving parts, no fans, no spinning disks, the system reaches deep C-states that most servers can't, while still supporting ECC memory for data integrity.
           </p>
           <p class="text-text-secondary leading-relaxed">
-            The i5-13500T's 35W TDP combined with Intel's power management, Powertop auto-tuning, and custom LTR configuration allows the system to idle at <strong class="text-text-accent font-medium">sub 14W</strong> in best conditions, comparable to a light bulb. Yet when compute is needed, all 14 cores and 20 threads are ready to burst.
+            The i5-13500T's 35W TDP combined with Intel's power management, Powertop auto-tuning, and custom LTR configuration allows the system to idle at <strong class="text-text-accent font-medium">~15W</strong> in best conditions, comparable to a light bulb. Yet when compute is needed, all 14 cores and 20 threads are ready to burst.
           </p>
         </div>
 
@@ -158,10 +158,10 @@ const project = projects.find((p) => p.id === 'homeserver')!;
           <div class="p-4 rounded-xl bg-bg-secondary/40 border border-white/5">
             <div class="flex items-center justify-between mb-2">
               <span class="text-xs font-mono text-text-secondary/60 uppercase">Idle Power</span>
-              <span class="text-lg font-heading font-bold text-accent-green">&lt; 14W</span>
+              <span class="text-lg font-heading font-bold text-accent-green">15W</span>
             </div>
             <div class="w-full h-1.5 bg-bg-tertiary rounded-full overflow-hidden">
-              <div class="h-full bg-accent-green/60 rounded-full" style="width: 9%;" />
+              <div class="h-full bg-accent-green/60 rounded-full" style="width: 10%;" />
             </div>
             <p class="mt-1 text-[10px] text-text-secondary/40 text-right">of 150W max</p>
           </div>
@@ -180,7 +180,7 @@ const project = projects.find((p) => p.id === 'homeserver')!;
               <div class="text-[10px] text-text-secondary/50 uppercase mt-0.5">Memory</div>
             </div>
             <div class="p-3 rounded-lg bg-bg-secondary/40 border border-white/5 text-center">
-              <div class="text-lg font-heading font-bold text-accent-yellow">C8</div>
+              <div class="text-lg font-heading font-bold text-accent-yellow">C10</div>
               <div class="text-[10px] text-text-secondary/50 uppercase mt-0.5">Deep C-State</div>
             </div>
           </div>
@@ -192,7 +192,7 @@ const project = projects.find((p) => p.id === 'homeserver')!;
     <!-- ANSIBLE / INFRA AS CODE -->
     <!-- ======================= -->
     <div class="reveal-up">
-      <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-6">{project.title} -{project.subtitle}</h3>
+      <h3 class="text-sm font-mono text-text-secondary/60 uppercase tracking-widest mb-6">{project.title} — {project.subtitle}</h3>
 
       <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
         <!-- Left: Terminal + Diagram -->

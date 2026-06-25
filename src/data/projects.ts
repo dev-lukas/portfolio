@@ -55,7 +55,7 @@ export const projects: Project[] = [
     title: 'Homeserver Ansible',
     subtitle: 'Infrastructure as Code',
     description:
-      'Ansible-based automation for managing my Proxmox homeserver. Handles SSH key deployment, power optimization with Powertop and Intel LTR, Docker service installation, and security hardening,all through a modular, role-based architecture.',
+      'Ansible-based automation for managing my Proxmox homeserver. Handles SSH key deployment, power optimization with Powertop and Intel LTR, Docker service installation, and security hardening — all through a modular, role-based architecture.',
     features: [
       'Automated SSH key deployment across all hosts',
       'Powertop auto-tuning & Intel LTR for deep C-states',
@@ -92,7 +92,7 @@ export const stratoExperience = {
     },
     {
       title: 'Hardened Container Security',
-      detail: 'Created CI/CD pipelines for secure container builds,triaging and fixing CVEs, attesting VEX files for supply chain transparency.',
+      detail: 'Created CI/CD pipelines for secure container builds — triaging and fixing CVEs, attesting VEX files for supply chain transparency.',
       icon: 'shield',
     },
     {
