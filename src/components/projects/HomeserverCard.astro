@@ -282,7 +282,22 @@ const project = projects.find((p) => p.id === 'homeserver')!;
             </div>
           </div>
 
-          <div class="reveal-up">
+          <div class="reveal-up flex flex-wrap items-center gap-3">
+            <!-- Blog CTA: the C-state journey write-up -->
+            <a
+              href="/blog/reaching-c10-on-a-fanless-server"
+              class="group relative inline-flex items-center gap-2.5 px-4 py-2 text-sm font-medium text-text-accent rounded-lg overflow-hidden border border-accent-green/40 bg-accent-green/[0.07] hover:border-accent-green/70 transition-all duration-300"
+            >
+              <span class="absolute inset-0 bg-accent-green/0 group-hover:bg-accent-green/[0.08] transition-colors duration-300" />
+              <svg class="relative w-4 h-4 text-accent-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+              <span class="relative">Read the journey</span>
+              <svg class="relative w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+
             {project.links.map((link) => (
               <a
                 href={link.url}

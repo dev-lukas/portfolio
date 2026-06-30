@@ -1,0 +1,104 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/global/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => import.meta.env.PROD ? !data.draft : true))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const accentMap: Record<string, string> = {
+  fire: 'text-accent-fire',
+  blue: 'text-accent-blue',
+  green: 'text-accent-green',
+  yellow: 'text-accent-yellow',
+};
+const borderMap: Record<string, string> = {
+  fire: 'hover:border-accent-fire/30',
+  blue: 'hover:border-accent-blue/30',
+  green: 'hover:border-accent-green/30',
+  yellow: 'hover:border-accent-yellow/30',
+};
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<Layout
+  title="Blog | Lukas Roth"
+  description="Lukas Roth's homelab blog. Notes from building a fully passive, energy-efficient homeserver, and the C-state, ASPM and ZFS rabbit holes I fell into along the way."
+>
+  <header class="fixed top-0 left-0 w-full z-50">
+    <div class="absolute inset-0 bg-bg-primary/80 backdrop-blur-md border-b border-white/5" />
+    <div class="relative max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="font-heading font-bold text-xl text-text-accent tracking-tight hover:text-accent-blue transition-colors duration-300">
+        LR<span class="text-accent-blue">.</span>
+      </a>
+      <a href="/#homeserver" class="text-sm font-mono text-text-secondary hover:text-text-accent transition-colors duration-300">
+        ← portfolio
+      </a>
+    </div>
+  </header>
+
+  <main class="relative pt-32 pb-20 min-h-screen">
+    <div class="pointer-events-none absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[360px] opacity-[0.10] blur-[120px]" style="background: radial-gradient(circle, var(--color-accent-green), transparent 70%);" />
+
+    <div class="relative z-10 max-w-3xl mx-auto px-6">
+      <!-- Header -->
+      <div class="mb-14">
+        <div class="inline-flex items-center px-4 py-1.5 bg-[#1E3A5F] rounded-full border border-[#2A4A6F] mb-5">
+          <span class="text-white text-xs font-heading font-medium tracking-wide">Homelab Journal</span>
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-heading font-bold text-text-accent tracking-tight">
+          Notes from the rack<span class="text-accent-green">.</span>
+        </h1>
+        <p class="mt-4 text-lg text-text-secondary leading-relaxed max-w-2xl">
+          This is where I write up the homelab stuff in more detail than a portfolio card can hold.
+          Right now that mostly means the low-power rabbit hole: deep C-states, the ASPM and AER
+          fights that came with them, and getting a fanless box to idle like a light bulb. Basically
+          the things I wish someone had written down before I started.
+        </p>
+      </div>
+
+      <!-- Post list -->
+      {posts.length === 0 ? (
+        <p class="font-mono text-sm text-text-secondary/60">No posts published yet. Check back soon.</p>
+      ) : (
+        <ul class="space-y-4">
+          {posts.map((post) => (
+            <li>
+              <a
+                href={`/blog/${post.id}`}
+                class={`group block p-6 rounded-xl bg-bg-secondary/50 border border-white/5 transition-all duration-300 ${borderMap[post.data.accent] ?? borderMap.green}`}
+              >
+                <div class="flex items-center gap-3 mb-3 text-xs font-mono text-text-secondary/60">
+                  <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+                  {post.data.readingTime && (<><span class="opacity-40">/</span><span>{post.data.readingTime} min</span></>)}
+                  {post.data.draft && (<span class="px-1.5 py-0.5 rounded bg-accent-yellow/10 text-accent-yellow">draft</span>)}
+                </div>
+                <h2 class={`text-xl font-heading font-semibold text-text-accent group-hover:${accentMap[post.data.accent] ?? accentMap.green} transition-colors duration-300`}>
+                  {post.data.title}
+                </h2>
+                <p class="mt-2 text-text-secondary leading-relaxed text-[0.95rem]">
+                  {post.data.description}
+                </p>
+                {post.data.tags.length > 0 && (
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    {post.data.tags.slice(0, 5).map((t) => (
+                      <span class="px-2 py-0.5 rounded text-[10px] font-mono text-text-secondary/70 bg-bg-tertiary border border-white/5">{t}</span>
+                    ))}
+                  </div>
+                )}
+                <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-mono text-text-secondary group-hover:text-text-accent transition-colors duration-300">
+                  read
+                  <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
