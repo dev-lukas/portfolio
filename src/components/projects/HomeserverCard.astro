@@ -21,7 +21,7 @@ const project = projects.find((p) => p.id === 'homeserver')!;
         Fully Passive Proxmox Server
       </p>
       <p class="mt-4 text-text-secondary leading-relaxed max-w-3xl">
-        A completely silent, fanless homeserver built for 24/7 operation. Serves as my main container registry, GitHub Actions runner for CI/CD, and runs my local self-hosted services, from home automation to media and internal tooling.
+        A completely silent, fanless server that runs 24/7. It's my container registry and self-hosted GitHub Actions runner, and it hosts pretty much everything I run at home. Home Assistant, media, the odd internal tool, it all lives here.
       </p>
     </div>
 
@@ -146,10 +146,10 @@ const project = projects.find((p) => p.id === 'homeserver')!;
         <!-- Left: Description (3 cols) -->
         <div class="lg:col-span-3 space-y-4">
           <p class="text-text-secondary leading-relaxed">
-            Every component was carefully selected not just for performance, but for power efficiency. With no moving parts, no fans, no spinning disks, the system reaches deep C-states that most servers can't, while still supporting ECC memory for data integrity.
+            Every part was picked for power efficiency as much as performance. With no fans and no spinning disks, the system drops into deep C-states most servers never reach, and it still runs ECC memory for the peace of mind.
           </p>
           <p class="text-text-secondary leading-relaxed">
-            The i5-13500T's 35W TDP combined with Intel's power management, Powertop auto-tuning, and custom LTR configuration allows the system to idle at <strong class="text-text-accent font-medium">~15W</strong> in best conditions, comparable to a light bulb. Yet when compute is needed, all 14 cores and 20 threads are ready to burst.
+            Between the i5-13500T's 35W TDP, Powertop, and some custom LTR and ASPM tuning, it idles around <strong class="text-text-accent font-medium">~15W</strong>, about what a light bulb pulls. And when I actually need the compute, all 14 cores and 20 threads are right there.
           </p>
         </div>
 
