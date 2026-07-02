@@ -24,8 +24,8 @@ import FirePhenixDiagramSvg from './FirePhenixDiagramSvg.astro';
 
   <div class="diagram-metrics" aria-label="FirePhenix architecture highlights">
     <div>
-      <span>Runner</span>
-      <strong class="runner-value">Self-Hosted<br />HomeServer Runner</strong>
+      <span>Delivery</span>
+      <strong class="runner-value">GitHub Actions<br />→ Private Registry</strong>
     </div>
     <div>
       <span>Data bus</span>
@@ -281,6 +281,11 @@ import FirePhenixDiagramSvg from './FirePhenixDiagramSvg.astro';
     stroke: rgba(232, 93, 44, 0.14);
   }
 
+  :global(.firephenix-architecture-svg .external-shell) {
+    stroke: rgba(144, 144, 160, 0.16);
+    stroke-dasharray: 5 7;
+  }
+
   :global(.firephenix-architecture-svg .lane-labels text) {
     fill: rgba(144, 144, 160, 0.42);
     font-family: var(--font-mono);
@@ -323,6 +328,11 @@ import FirePhenixDiagramSvg from './FirePhenixDiagramSvg.astro';
     stroke: rgba(139, 124, 255, 0.76);
   }
 
+  :global(.firephenix-architecture-svg .tone-steel) {
+    --node-color: #9090A0;
+    stroke: rgba(144, 144, 160, 0.6);
+  }
+
   :global(.firephenix-architecture-svg .node-shell) {
     fill: url(#fp-panel);
     stroke: color-mix(in srgb, var(--node-color) 42%, transparent);
@@ -357,6 +367,13 @@ import FirePhenixDiagramSvg from './FirePhenixDiagramSvg.astro';
     fill: rgba(144, 144, 160, 0.86);
     font-family: var(--font-body);
     font-size: 11px;
+  }
+
+  :global(.firephenix-architecture-svg .edge-label) {
+    fill: rgba(144, 144, 160, 0.85);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
   }
 
   @keyframes fp-flow {

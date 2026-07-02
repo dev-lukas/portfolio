@@ -6,42 +6,53 @@ interface Props {
 const { large = false } = Astro.props;
 
 const nodes = [
-  { id: 'repo', kicker: 'Source', label: 'GitHub Repos', detail: ['Backend', 'frontend'], x: 58, y: 74, w: 148, h: 88, tone: 'green' },
-  { id: 'ci', kicker: 'CI/CD', label: 'GitHub Actions', detail: ['Build + test', 'deploy'], x: 282, y: 74, w: 160, h: 88, tone: 'green' },
-  { id: 'runner', kicker: 'Runner', label: 'HomeServer Runner', detail: ['Self-hosted', 'deploy target'], x: 526, y: 68, w: 178, h: 100, tone: 'green' },
-  { id: 'compose', kicker: 'Runtime', label: 'Docker Compose', detail: ['Health checks', 'restart order'], x: 384, y: 218, w: 172, h: 88, tone: 'green' },
+  // Delivery pipeline
+  { id: 'repo', kicker: 'Source', label: 'GitHub Repos', detail: ['backend · website · ansible'], x: 64, y: 62, w: 186, h: 76, tone: 'green' },
+  { id: 'ci', kicker: 'CI/CD', label: 'GitHub Actions', detail: ['build · test · publish'], x: 336, y: 62, w: 196, h: 76, tone: 'green' },
+  { id: 'registry', kicker: 'Images', label: 'Private Registry', detail: ['registry.lukas-roth.dev'], x: 628, y: 62, w: 244, h: 76, tone: 'green' },
 
-  { id: 'nginx', kicker: 'Edge', label: 'Nginx', detail: ['TLS', 'static SPA'], x: 60, y: 334, w: 132, h: 88, tone: 'blue' },
-  { id: 'home', kicker: 'UI', label: 'Vue Homepage', detail: ['Stats + rankings', 'profiles'], x: 250, y: 330, w: 160, h: 88, tone: 'blue' },
-  { id: 'api', kicker: 'API', label: 'Flask Gateway', detail: ['Auth + rate limits', 'JSON API'], x: 492, y: 320, w: 184, h: 98, tone: 'blue' },
-  { id: 'valkey', kicker: 'Cache + bus', label: 'Valkey', detail: ['Pub/Sub + cache', 'rate limits'], x: 754, y: 270, w: 142, h: 88, tone: 'fire' },
-  { id: 'mariadb', kicker: 'State', label: 'MariaDB', detail: ['Users + sessions', 'activity data'], x: 754, y: 406, w: 142, h: 88, tone: 'fire' },
+  // External actors
+  { id: 'users', kicker: 'Clients', label: 'Users', detail: ['browser · HTTPS'], x: 46, y: 236, w: 156, h: 76, tone: 'steel' },
+  { id: 'steam', kicker: 'Identity', label: 'Steam', detail: ['OpenID login'], x: 46, y: 388, w: 156, h: 76, tone: 'steel' },
+  { id: 'discordapi', kicker: 'Platform', label: 'Discord', detail: ['gateway · REST'], x: 46, y: 516, w: 156, h: 76, tone: 'steel' },
+  { id: 'openrouter', kicker: 'LLM API', label: 'OpenRouter', detail: ['Ember AI chat'], x: 46, y: 646, w: 156, h: 76, tone: 'steel' },
 
-  { id: 'discord', kicker: 'Bot', label: 'Discord Bot', detail: ['Commands + AI chat'], x: 128, y: 532, w: 158, h: 76, tone: 'purple' },
-  { id: 'teamspeak', kicker: 'Bot', label: 'TeamSpeak Bot', detail: ['Voice tracking'], x: 388, y: 532, w: 158, h: 76, tone: 'purple' },
-  { id: 'external', kicker: 'Platforms', label: 'Steam / Discord / TS3', detail: ['Identity + events'], x: 648, y: 532, w: 196, h: 76, tone: 'purple' },
+  // Compose stack
+  { id: 'nginx', kicker: 'Edge', label: 'Nginx', detail: ['TLS · CrowdSec'], x: 300, y: 236, w: 180, h: 76, tone: 'blue' },
+  { id: 'spa', kicker: 'Frontend', label: 'Vue SPA', detail: ['rankings · profiles'], x: 570, y: 236, w: 180, h: 76, tone: 'blue' },
+  { id: 'api', kicker: 'Backend', label: 'Flask API', detail: ['REST · sessions', 'rate limits'], x: 300, y: 380, w: 190, h: 92, tone: 'blue' },
+  { id: 'mariadb', kicker: 'State', label: 'MariaDB', detail: ['users · progression', 'activity data'], x: 740, y: 380, w: 180, h: 92, tone: 'fire' },
+  { id: 'bot', kicker: 'Workers', label: 'Bot Runner', detail: ['Discord + TS bots', 'ranking loop'], x: 300, y: 540, w: 190, h: 92, tone: 'purple' },
+  { id: 'valkey', kicker: 'Bus + Cache', label: 'Valkey', detail: ['pub/sub RPC · streams', 'presence · rate limits'], x: 545, y: 540, w: 200, h: 92, tone: 'fire' },
+  { id: 'teamspeak', kicker: 'Voice', label: 'TeamSpeak 3', detail: ['voice · 9987/udp'], x: 300, y: 688, w: 190, h: 76, tone: 'purple' },
+  { id: 'ttt', kicker: 'Gameserver', label: 'TTT · Gmod', detail: ['LinuxGSM · 27015/udp'], x: 690, y: 688, w: 220, h: 76, tone: 'purple' },
 ];
 
 const edges = [
-  { d: 'M206 118 C238 118 250 118 282 118', tone: 'green', delay: '0s' },
-  { d: 'M442 118 C474 118 494 118 526 118', tone: 'green', delay: '-1.4s' },
-  { d: 'M614 168 C604 194 580 222 556 250', tone: 'green', delay: '-2.5s' },
-  { d: 'M384 252 C290 260 218 296 172 334', tone: 'green', delay: '-2s' },
-  { d: 'M430 306 C406 318 390 324 370 330', tone: 'green', delay: '-2.7s' },
-  { d: 'M556 254 C612 258 708 262 754 286', tone: 'green', delay: '-3.2s' },
-  { d: 'M556 282 C624 336 698 392 754 440', tone: 'green', delay: '-0.6s' },
-  { d: 'M506 306 C504 312 502 316 500 320', tone: 'green', delay: '-1.6s' },
-  { d: 'M448 306 C382 412 282 462 218 532', tone: 'green', delay: '-1.1s' },
-  { d: 'M488 306 C472 390 468 454 468 532', tone: 'green', delay: '-2.3s' },
-  { d: 'M192 374 C212 374 228 374 250 374', tone: 'blue', delay: '-3.6s' },
-  { d: 'M192 398 C312 426 422 402 492 366', tone: 'blue', delay: '-0.4s' },
-  { d: 'M410 370 C444 370 460 370 492 370', tone: 'blue', delay: '-1.9s' },
-  { d: 'M410 394 C444 420 460 420 492 398', tone: 'blue', delay: '-3.1s' },
-  { d: 'M676 352 C706 326 726 312 754 306', tone: 'blue', delay: '-0.8s' },
-  { d: 'M676 384 C710 416 728 438 754 450', tone: 'blue', delay: '-2.8s' },
-  { d: 'M286 570 C350 546 432 484 524 418', tone: 'purple', delay: '-1.2s' },
-  { d: 'M546 570 C562 510 578 452 594 418', tone: 'purple', delay: '-2.2s' },
-  { d: 'M648 570 C610 518 620 462 654 418', tone: 'purple', delay: '-3.8s' },
+  // Delivery pipeline
+  { d: 'M250 100C282 98 300 98 332 100', tone: 'green', delay: '0s' },
+  { d: 'M532 100C564 98 592 98 624 100', tone: 'green', delay: '-1.4s' },
+  { d: 'M750 138C752 156 748 176 750 194', tone: 'green', delay: '-2.5s', label: { x: 762, y: 172, text: 'deploy · compose up', anchor: 'start' } },
+
+  // Ingress
+  { d: 'M202 274C234 272 264 272 296 274', tone: 'blue', delay: '-0.6s', label: { x: 249, y: 264, text: 'HTTPS' } },
+  { d: 'M480 274C510 272 536 272 566 274', tone: 'blue', delay: '-1.9s', label: { x: 523, y: 264, text: 'static' } },
+  { d: 'M390 312C388 334 392 354 390 376', tone: 'blue', delay: '-3.1s', label: { x: 400, y: 350, text: '/api', anchor: 'start' } },
+
+  // Backend data + auth
+  { d: 'M490 418C572 414 652 414 734 418', tone: 'blue', delay: '-0.4s', label: { x: 612, y: 408, text: 'SQL' } },
+  { d: 'M300 422C268 424 236 425 206 426', tone: 'purple', delay: '-2.8s', label: { x: 251, y: 414, text: 'OpenID' } },
+
+  // Valkey bus (bidirectional)
+  { d: 'M440 472C490 505 565 524 618 538', tone: 'fire', delay: '-1.1s', both: true, label: { x: 498, y: 496, text: 'RPC · cache' } },
+  { d: 'M545 586C528 584 512 584 494 586', tone: 'fire', delay: '-2.2s', both: true, label: { x: 519, y: 574, text: 'pub/sub' } },
+  { d: 'M665 632C700 655 750 674 786 686', tone: 'fire', delay: '-3.6s', both: true, label: { x: 762, y: 650, text: 'RPC · streams' } },
+
+  // Bot workers
+  { d: 'M475 540C580 494 700 478 804 474', tone: 'blue', delay: '-1.6s', label: { x: 645, y: 484, text: 'SQL' } },
+  { d: 'M395 632C393 650 397 666 395 684', tone: 'blue', delay: '-2.7s', label: { x: 405, y: 662, text: 'ServerQuery', anchor: 'start' } },
+  { d: 'M300 572C268 568 234 562 206 558', tone: 'purple', delay: '-1.2s' },
+  { d: 'M300 602C264 622 232 652 208 676', tone: 'purple', delay: '-3.2s' },
 ];
 
 const toneClass = {
@@ -49,6 +60,7 @@ const toneClass = {
   blue: 'tone-blue',
   green: 'tone-green',
   purple: 'tone-purple',
+  steel: 'tone-steel',
 };
 
 const toneColors = {
@@ -56,6 +68,7 @@ const toneColors = {
   blue: '#4A8FE7',
   green: '#4CAF50',
   purple: '#8B7CFF',
+  steel: '#9090A0',
 };
 
 const markerId = (tone: keyof typeof toneColors) => `fp-arrow-${tone}${large ? '-large' : ''}`;
@@ -63,13 +76,13 @@ const markerId = (tone: keyof typeof toneColors) => `fp-arrow-${tone}${large ? '
 
 <svg
   class:list={['firephenix-architecture-svg', { 'is-large': large }]}
-  viewBox="0 0 940 650"
+  viewBox="0 0 960 812"
   role="img"
   aria-labelledby={large ? 'fp-architecture-title-large fp-architecture-desc-large' : 'fp-architecture-title fp-architecture-desc'}
 >
-  <title id={large ? 'fp-architecture-title-large' : 'fp-architecture-title'}>FirePhenix deployment and runtime workflow</title>
+  <title id={large ? 'fp-architecture-title-large' : 'fp-architecture-title'}>FirePhenix delivery and runtime architecture</title>
   <desc id={large ? 'fp-architecture-desc-large' : 'fp-architecture-desc'}>
-    Diagram showing GitHub Actions deploying to a home server runner, Docker Compose running Nginx, the Vue homepage, Flask API, Valkey, MariaDB, Discord bot and TeamSpeak bot integrations.
+    GitHub Actions builds and publishes images to a private registry, deployed via Docker Compose. Nginx terminates TLS in front of a Vue SPA and Flask API. The API and the bot container never talk directly: commands and replies flow over Valkey pub/sub, which also carries the TTT gameserver RPC and achievement event stream. MariaDB stores state; external actors are users, Steam OpenID, the Discord API and OpenRouter.
   </desc>
 
   <defs>
@@ -96,21 +109,33 @@ const markerId = (tone: keyof typeof toneColors) => `fp-arrow-${tone}${large ? '
     ))}
   </defs>
 
-  <rect class="diagram-bg" x="0" y="0" width="940" height="650" rx="20" />
-  <path class="diagram-grid" d="M0 190H940M0 510H940M224 190V650M704 190V650" />
-  <rect class="scope-shell delivery-shell" x="30" y="42" width="704" height="146" rx="18" />
-  <rect class="scope-shell runtime-shell" x="30" y="204" width="880" height="418" rx="18" />
-  <ellipse class="core-glow" cx="588" cy="374" rx="230" ry="180" fill={`url(#${large ? 'fp-core-large' : 'fp-core'})`} />
+  <rect class="diagram-bg" x="0" y="0" width="960" height="812" rx="20" />
+  <rect class="scope-shell delivery-shell" x="30" y="36" width="900" height="124" rx="18" />
+  <rect class="scope-shell external-shell" x="30" y="200" width="196" height="572" rx="18" />
+  <rect class="scope-shell runtime-shell" x="250" y="200" width="680" height="572" rx="18" />
+  <ellipse class="core-glow" cx="645" cy="586" rx="240" ry="170" fill={`url(#${large ? 'fp-core-large' : 'fp-core'})`} />
 
   <g class="lane-labels">
-    <text x="52" y="64">delivery pipeline</text>
-    <text x="52" y="228">runtime stack</text>
-    <text x="52" y="514">event workers</text>
+    <text x="52" y="56">delivery pipeline</text>
+    <text x="46" y="224">outside world</text>
+    <text x="272" y="224">vps · docker compose</text>
   </g>
 
   <g class="edges">
     {edges.map((edge) => (
-      <path class:list={['architecture-link', toneClass[edge.tone]]} d={edge.d} marker-end={`url(#${markerId(edge.tone as keyof typeof toneColors)})`} style={`--delay:${edge.delay}`} />
+      <path
+        class:list={['architecture-link', toneClass[edge.tone]]}
+        d={edge.d}
+        marker-end={`url(#${markerId(edge.tone as keyof typeof toneColors)})`}
+        marker-start={edge.both ? `url(#${markerId(edge.tone as keyof typeof toneColors)})` : undefined}
+        style={`--delay:${edge.delay}`}
+      />
+    ))}
+  </g>
+
+  <g class="edge-labels">
+    {edges.filter((edge) => edge.label).map((edge) => (
+      <text class="edge-label" x={edge.label!.x} y={edge.label!.y} text-anchor={edge.label!.anchor ?? 'middle'}>{edge.label!.text}</text>
     ))}
   </g>
 
