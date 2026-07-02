@@ -13,6 +13,11 @@ on:
         type: string
         default: portfolio
 
+# One pipeline per ref at a time: the self-hosted runner hosts several repos.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: read
 
