@@ -34,4 +34,7 @@ docker run -p 8090:80 portfolio
 
 ## License
 
-All rights reserved.
+The code is licensed under [MIT](LICENSE).
+
+The content is not: blog posts, texts, photos and screenshots under
+`src/content/` and `public/images/` are © Lukas Roth, all rights reserved.
