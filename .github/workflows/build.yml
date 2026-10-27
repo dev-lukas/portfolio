@@ -25,7 +25,7 @@ jobs:
   checks:
     uses: dev-lukas/ci-cd-actions/.github/workflows/node-checks.yml@main
     with:
-      node_version: "22"
+      node_version: "24"
       test_command: npm test
       build_command: npm run build
       audit_command: npm audit --audit-level=critical
